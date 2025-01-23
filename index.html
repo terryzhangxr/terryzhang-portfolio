@@ -13,8 +13,53 @@
             cursor: pointer;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js" defer></script>
+</head>
+<body>
+    <div id="overlay">
+        <div id="jumble-container"></div>
+    </div>
+
+    <header id="main-header">
+        <h1>Terryzhang's Photo Portfolio</h1>
+        <nav>
+            <ul>
+                <div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">BLOG</a></div>
+                <div><a class="fx0" href="https://github.com/terryzhangxr" onclick="return handleLinkClick(event)">Github--terryzhangxr</a></div>
+                <div><a class="fx0" href="#portfolio" onclick="return handleLinkClick(event)">Photos</a></div>
+                <div><a class="fx0" href="#contact" onclick="return handleLinkClick(event)">Contact</a></div>
+                <div><a class="fx0" href="mailto:zhang@mrzxr.com" onclick="return handleLinkClick(event)">Write to me</a></div>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="about">
+        <h2>ME</h2>
+        <h5>中国 上海 初二学生</h5>
+        <p>Python / HTML, JS, CSS 项目构建&开发</p>
+        <p>主攻语言：Python, HTML, CSS, JS</p>
+        <p>更多介绍请见博客：<div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">www.mrzxr.com</a></div></p>
+        <p>⬇⬇⬇⬇⬇</p>        
+    </section>
+    
+    <section id="portfolio">
+        <h2>My Work</h2>
+        <div class="gallery">
+            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.webp?updatedAt=1737440050555" alt="TERRY ZHANG's blog" loading="lazy"></div>
+            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.webp?updatedAt=1737445559321" alt="tree" loading="lazy"></div>
+            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154647.webp?updatedAt=1737445626159" alt="tian an men" loading="lazy"></div>
+            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154810.webp?updatedAt=1737445720187" alt="firework 2024" loading="lazy"></div>
+            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.webp?updatedAt=1737445877405" alt="Lego p42dc" loading="lazy"></div>
+        </div>
+    </section>
+    
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <p class="email">Email: zhang@mrzxr.com</p>
+        <p class="wechat">WeChat code: xiaozhangterry</p>
+    </section>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
@@ -134,49 +179,5 @@
             return true; // Allow default behavior on other devices
         }
     </script>
-</head>
-<body>
-    <div id="overlay">
-        <div id="jumble-container"></div>
-    </div>
-
-    <header id="main-header">
-        <h1>Terryzhang's Photo Portfolio</h1>
-        <nav>
-            <ul>
-                <div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">BLOG</a></div>
-                <div><a class="fx0" href="https://github.com/terryzhangxr" onclick="return handleLinkClick(event)">Github--terryzhangxr</a></div>
-                <div><a class="fx0" href="#portfolio" onclick="return handleLinkClick(event)">Photos</a></div>
-                <div><a class="fx0" href="#contact" onclick="return handleLinkClick(event)">Contact</a></div>
-                <div><a class="fx0" href="mailto:zhang@mrzxr.com" onclick="return handleLinkClick(event)">Write to me</a></div>
-            </ul>
-        </nav>
-    </header>
-    
-    <section id="about">
-        <h2>ME</h2>
-        <h5>中国 上海 初二学生</h5>
-        <p>Python / HTML, JS, CSS 项目构建&开发</p>
-        <p>主攻语言：Python, HTML, CSS, JS</p>
-        <p>更多介绍请见博客：<div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">www.mrzxr.com</a></div></p>
-        <p>⬇⬇⬇⬇⬇</p>        
-    </section>
-    
-    <section id="portfolio">
-        <h2>My Work</h2>
-        <div class="gallery">
-            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555" alt="TERRY ZHANG's blog" loading="lazy"></div>
-            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321" alt="tree" loading="lazy"></div>
-            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154647.jpg?updatedAt=1737445626159" alt="tian an men" loading="lazy"></div>
-            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154810.jpg?updatedAt=1737445720187" alt="firework 2024" loading="lazy"></div>
-            <div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405" alt="Lego p42dc" loading="lazy"></div>
-        </div>
-    </section>
-    
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p class="email">Email: zhang@mrzxr.com</p>
-        <p class="wechat">WeChat code: xiaozhangterry</p>
-    </section>
 </body>
 </html>
