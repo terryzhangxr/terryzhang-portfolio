@@ -7,14 +7,14 @@
     <link rel="icon" href="https://s2.loli.net/2025/01/21/wmMYhAlqsVDoaPp.png" type="image/x-icon">
     <!-- 引入 Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet"> <!-- 将样式移到外部 CSS 文件 -->
+    <link href="https://cdn.example.com/styles.min.css" rel="stylesheet"> <!-- 使用CDN托管并压缩的CSS文件 -->
     <style>
         .next_button {
             cursor: pointer;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" defer></script> <!-- 使用defer延迟加载 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
@@ -23,7 +23,7 @@
             const header = document.getElementById('main-header');
             const jumbleContainer = document.getElementById('jumble-container');
             const finalText = "TERRYZHANG--PHOTO--PORTFOLIO";
-            
+
             // 确保在 overlay 动画结束后，header 仍然显示
             header.style.opacity = '1';
             header.style.transform = 'translateY(0)';
