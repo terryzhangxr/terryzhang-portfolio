@@ -1,1 +1,1349 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Terryzhang 的作品集——theme tomorrow portfolio</title><link rel="icon" href="https://s2.loli.net/2025/01/21/wmMYhAlqsVDoaPp.png" type="image/x-icon"><link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body><div id="overlay"><div id="jumble-container"></div></div><header id="main-header"><h1>Terryzhang's Photo Portfolio</h1><nav><ul><div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">BLOG</a></div><div><a class="fx0" href="https://github.com/terryzhangxr" onclick="return handleLinkClick(event)">GitHub--terryzhangxr</a></div><div><a class="fx0" href="#portfolio" onclick="return handleLinkClick(event)">Photos</a></div><div><a class="fx0" href="#contact" onclick="return handleLinkClick(event)">Contact</a></div><div><a class="fx0" href="mailto:zhang@mrzxr.com" onclick="return handleLinkClick(event)">Write to me</a></div></ul></nav></header><section id="about"><h2>ME</h2><h5>中国 上海 初二学生</h5><p>Python / HTML, JS, CSS 项目构建&开发</p><p>主攻语言：Python, HTML, CSS, JS</p><p>更多介绍请见博客：<div><a class="fx0" href="https://www.mrzxr.com" onclick="return handleLinkClick(event)">www.mrzxr.com</a></div></p><p>⬇⬇⬇⬇⬇</p></section><section id="portfolio"><h2>My Work</h2><div class="gallery"><div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555" alt="TERRY ZHANG's blog" loading="lazy"><div class="description">TERRY ZHANG's blog——2025.1</div></div><div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321" alt="tree" loading="lazy"><div class="description">北京 国博前雪松——2024.7</div></div><div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154647.jpg?updatedAt=1737445626159" alt="tian an men" loading="lazy"><div class="description">北京 天安门——2024.7</div></div><div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154810.jpg?updatedAt=1737445720187" alt="firework 2024" loading="lazy"><div class="description">南昌 新年烟花——2024.2</div></div><div class="photo"><img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405" alt="Lego p42dc" loading="lazy"><div class="description">Lego p42dc——2024.8</div></div></div></section><section id="contact"><h2>Contact Me</h2><p class="email">Email: zhang@mrzxr.com</p><p class="wechat">WeChat code: xiaozhangterry</p></section><section id="footer"><p>©2025 terryzhang. All rights reserved. 所有图片未经许可禁止使用</p></section><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script><script>function invertColor(hex){hex=hex.replace('#','');let r=(255-parseInt(hex.slice(0,2),16)).toString(16);let g=(255-parseInt(hex.slice(2,4),16)).toString(16);let b=(255-parseInt(hex.slice(4,6),16)).toString(16);return`#${padZero(r)}${padZero(g)}${padZero(b)}`;}function padZero(str,len=2){return('0'.repeat(len)+str).slice(-len);}function setDynamicTextColor(){const computedStyle=getComputedStyle(document.body);const bgColor=computedStyle.backgroundColor;const rgb=bgColor.match(/\d+/g).map(Number);const hex=`#${rgbToHex(rgb[0])}${rgbToHex(rgb[1])}${rgbToHex(rgb[2])}`;document.documentElement.style.setProperty('--text-color',invertColor(hex));}function rgbToHex(rgb){const hex=rgb.toString(16);return hex.length===1?'0'+hex:hex;}document.addEventListener('DOMContentLoaded',()=>{gsap.registerPlugin(ScrollTrigger);const overlay=document.getElementById('overlay');const header=document.getElementById('main-header');const jumbleContainer=document.getElementById('jumble-container');const finalText="TERRYZHANG--PHOTO--PORTFOLIO";header.style.opacity='1';header.style.transform='translateY(0)';function jumbleAnimation(text,container,duration){const characters="!@#$%^&*()_+{}:<>?[];,./";let current=text.split('');for(let i=0;i<text.length;i++){const span=document.createElement('span');span.classList.add('jumble');span.style.animationDelay=`${i*duration/text.length}s`;container.appendChild(span);(function animateCharacter(index){const interval=setInterval(()=>{if(index===text.length){clearInterval(interval);span.textContent=text[index];return;}span.textContent=characters[Math.floor(Math.random()*characters.length)];},50);setTimeout(()=>{clearInterval(interval);span.textContent=text[index];},duration*1000);})(i);}}jumbleAnimation(finalText,jumbleContainer,2);setTimeout(()=>{overlay.style.animation='fadeOut 2s ease forwards';document.body.style.overflow='auto';},3100);gsap.utils.toArray('section').forEach(section=>{gsap.to(section,{scrollTrigger:{trigger:section,start:'top 80%',end:'top 20%',toggleActions:'play none none none'},opacity:1,y:0,duration:1,ease:'power2.out'});});gsap.utils.toArray('section p').forEach(p=>{gsap.to(p,{scrollTrigger:{trigger:p,start:'top 90%',end:'top 60%',toggleActions:'play reverse play reverse',scrub:true},opacity:1,y:0,duration:1,ease:'power2.out'});});gsap.utils.toArray('.photo').forEach(photo=>{gsap.from(photo,{scrollTrigger:{trigger:photo,start:'top 80%',end:'bottom 20%',scrub:true},scale:0.8,opacity:0});photo.addEventListener('mouseover',()=>{gsap.to(photo,{scale:1.1,duration:0.3});});photo.addEventListener('mouseout',()=>{gsap.to(photo,{scale:1,duration:0.3});});});document.querySelectorAll('section h2, section p').forEach(text=>{text.addEventListener('mouseover',()=>{gsap.to(text,{scale:1.1,duration:0.3,color:'#00bfff'});});text.addEventListener('mouseout',()=>{gsap.to(text,{scale:1,duration:0.3,color:'#000'});});});setDynamicTextColor();setInterval(setDynamicTextColor,1000);const footer=document.querySelector('footer');window.addEventListener('scroll',()=>{if((window.innerHeight+window.scrollY)>=document.body.scrollHeight){footer.classList.add('visible');}else{footer.classList.remove('visible');}});});function handleLinkClick(event){if(navigator.userAgent.match(/iPad/i)){window.location.href=event.target.href;return false;}return true;}</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerryZhang 的作品集	 | terryzhang's portfolio</title>
+    <link rel="icon" href="https://s2.loli.net/2025/01/21/wmMYhAlqsVDoaPp.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary-color: #ff0080;
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121f;
+            --bg-card-light: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --accent-color: #7b42ff;
+            --border-color: #2a2a3e;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --glow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 科技背景效果 */
+        #tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(7, 42, 88, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(120, 0, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-dark) 0%, #050510 100%);
+            opacity: 0.9;
+        }
+        
+        /* 网格背景 */
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background-color: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(42, 42, 62, 0.5);
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 0.8rem 5%;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            position: relative;
+            padding: 0.3rem 0;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.5s ease;
+        }
+        
+        .logo:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* 主内容区域 */
+        main {
+            margin-top: 80px;
+        }
+        
+        section {
+            padding: 5rem 5%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            text-align: center;
+            padding-top: 10rem;
+            padding-bottom: 8rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+        
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+        
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .badge {
+            background-color: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .badge:hover {
+            background-color: rgba(0, 212, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+        
+        /* 关于区域 */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+        }
+        
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: var(--glow);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 作品集区域 */
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-dark);
+            border-color: var(--primary-color);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .photo-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow), var(--glow);
+        }
+        
+        .photo-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-card:hover .photo-img {
+            transform: scale(1.05);
+        }
+        
+        .photo-info {
+            padding: 1.5rem;
+        }
+        
+        .photo-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .photo-date {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+        }
+        
+        .photo-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* 更新后的联系区域 */
+        .contact-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .contact-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+        }
+        
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            line-height: 1.8;
+        }
+        
+        /* 联系卡片网格 */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow), var(--glow);
+        }
+        
+        .contact-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .contact-card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 66, 255, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .contact-card:hover .contact-card-icon {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(123, 66, 255, 0.2));
+            transform: scale(1.1);
+        }
+        
+        .contact-card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-card-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .contact-card-action {
+            margin-top: auto;
+            width: 100%;
+        }
+        
+        .contact-card-btn {
+            display: inline-block;
+            background-color: rgba(0, 212, 255, 0.1);
+            color: var(--primary-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+        }
+        
+        .contact-card-btn:hover {
+            background-color: rgba(0, 212, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+        
+        /* 复制成功提示 */
+        .copy-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary-color);
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .copy-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--bg-card);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .about-content, .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-card);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+                border-top: 1px solid var(--border-color);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .about-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            section {
+                padding: 4rem 5%;
+            }
+            
+            .hero {
+                padding-top: 8rem;
+                padding-bottom: 6rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-card);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* 动画类 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 加载动画 */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid rgba(0, 212, 255, 0.2);
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- 科技背景元素 -->
+    <div id="tech-bg"></div>
+    <div class="grid-lines"></div>
+    <div id="particles-js"></div>
+    
+    <!-- 导航栏 -->
+    <header id="main-header">
+        <a href="#" class="logo">TerryZhang</a>
+        
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home" class="active">首页</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#portfolio">作品</a></li>
+            <li><a href="#contact">联系</a></li>
+            <li><a href="https://www.mrzxr.com" target="_blank">博客</a></li>
+            <li><a href="https://github.com/terryzhangxr" target="_blank">GitHub</a></li>
+        </ul>
+    </header>
+    
+    <main>
+        <!-- hero区域 -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                
+                <h1 class="fade-in">TerryZhang 作品集</h1>
+                <p class="hero-subtitle fade-in">初二学生 · 上海 · 编程&摄影爱好者</p>
+                <p class="fade-in">专注于Python开发与Web技术，用代码创造价值，用镜头记录世界  这里是展示我摄影作品和技术项目的空间</p>
+                
+                <div class="hero-badges">
+                    <div class="badge fade-in">Python 开发</div>
+                    <div class="badge fade-in">Web 前端</div>
+                    <div class="badge fade-in">摄影艺术</div>
+                    <div class="badge fade-in">乐高moc</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 关于区域 -->
+        <section id="about" class="about">
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <h2>关于我</h2>
+                    <p>我是来自上海的一名初三学生，出生于2011年的夏天。我热爱编程，乐高moc和天文；也喜欢航空、铁道。时常玩玩音乐或于闲暇时捣鼓捣鼓数码科技</p>
+                    <h3>一些技能点</h3>
+                    <p>Python：掌握相对最强的编程语言，有开发chatbot、一些小游戏和树莓派的经验</p>
+                    <p>HTML/CSS/JS：也会，基本用于对于博客和一些网页项目的开发</p>
+                    <p>乐高moc：使用legostudio设计渲染，有几个实体作品</p>
+                    <p>音乐：小号十级，担任过校管乐团团长(得意)</p>
+                    
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">3+</div>
+                            <div class="stat-label">编程语言</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">编程项目</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">乐高moc</div>
+                        </div>
+
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">摄影作品</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-visual fade-in">
+                    <div class="visual-card">
+                        <div class="visual-content">
+                            <h3>技术栈</h3>
+                            <div class="tech-stack">
+                                <div class="tech-item">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-html5"></i>
+                                    <span>HTML5</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-css3-alt"></i>
+                                    <span>CSS3</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 作品集区域 -->
+        <section id="portfolio" class="portfolio">
+            <h2 class="section-title fade-in">作品</h2>
+            
+            <div class="portfolio-filter fade-in">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="tech">科技</button>
+                <button class="filter-btn" data-filter="sightseeing">风光摄影</button>
+                <button class="filter-btn" data-filter="other">其他</button>
+            </div>
+            
+            <div class="gallery">
+                <!-- 照片卡片 1 -->
+                <div class="photo-card fade-in" data-category="tech">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/sitelogo.webp?updatedAt=1764513576428" alt="TERRY ZHANG's blog" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">个人网络形象</h3>
+                        <div class="photo-date">2024年2月</div>
+                        <p class="photo-description">这是一个自画的滑稽表情，目前能在我的博客和其他社交媒体账号上看到</p>
+                    </div>
+                </div>
+
+                <!-- 照片卡片 1 -->
+                <div class="photo-card fade-in" data-category="tech">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555" alt="TERRY ZHANG's blog" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">个人博客</h3>
+                        <div class="photo-date">2025年1月</div>
+                        <p class="photo-description">我的个人博客界面，基于hexo-theme-redefine搭建 <a href="https://www.mrzxr.com" style="color: grey;">点这里去项目链接</a></p>
+                    </div>
+                </div>
+                
+                <!-- 照片卡片 2 -->
+                <div class="photo-card fade-in" data-category="sightseeing">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321" alt="tree" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">国博前雪松</h3>
+                        <div class="photo-date">2024年7月 · 北京</div>
+                        <p class="photo-description">参观完毕后摄于中国国家博物馆前</p>
+                    </div>
+                </div>
+                
+                <!-- 照片卡片 3 -->
+                <div class="photo-card fade-in" data-category="sightseeing">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154647.jpg?updatedAt=1737445626159" alt="tian an men" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">天安门广场</h3>
+                        <div class="photo-date">2024年7月 · 北京</div>
+                        <p class="photo-description">2024暑假摄于天安门广场。</p>
+                    </div>
+                </div>
+                
+                <!-- 照片卡片 4 -->
+                <div class="photo-card fade-in" data-category="other">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154810.jpg?updatedAt=1737445720187" alt="firework 2024" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">新年烟花</h3>
+                        <div class="photo-date">2024年2月 · 南昌</div>
+                        <p class="photo-description">2024春节期间老家的烟花表演，璀璨的色彩点亮夜空。</p>
+                    </div>
+                </div>
+
+                <!-- 照片卡片 5 -->
+                <div class="photo-card fade-in" data-category="other">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-12-14%20211827.png" alt="Lego p42dc" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">Typace博客框架</h3>
+                        <div class="photo-date">2025年4月</div>
+                        <p class="photo-description">自主开发的一个博客框架，目前正在完善开源计划中    
+                        <a href="https://typace.mrzxr.com" style="color: grey;">点这里去演示地址</a></p>
+                    </div>
+                </div>
+
+                <!-- 照片卡片 5 -->
+                <div class="photo-card fade-in" data-category="other">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405" alt="Lego p42dc" class="photo-img" loading="lazy">
+                    </div>
+                    <div class="photo-info">
+                        <h3 class="photo-title">lego train p42dc</h3>
+                        <div class="photo-date">2024年8月</div>
+                        <p class="photo-description">设计于2024年7月，实体于同年8月。原型为美国国铁p42dc型内燃机车<a href="https://www.bilibili.com/video/BV1vdHAeUE8f?spm_id_from=333.1387.homepage.video_card.click" style="color: grey;">点这里去看具体介绍</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 联系区域 -->
+        <section id="contact" class="contact">
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <h2>联系我</h2>
+                    <p>如果您对我的作品感兴趣，欢迎通过以下方式与我联系。无论是技术交流、项目合作还是摄影分享，我都非常期待与您沟通。</p>
+                    <p class="highlight">Let's enjoy the charm of technology!</p>
+                </div>
+                
+                <!-- 整合的联系方式网格 -->
+                <div class="contact-grid">
+                    <!-- 电子邮件卡片 -->
+                    <div class="contact-card fade-in">
+                        <div class="contact-card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="contact-card-title">E-mail</h3>
+                        <p class="contact-card-desc">通过电子邮件与我联系，我通常会在24小时内回复</p>
+                        <div class="contact-card-action">
+                            <a href="mailto:zhang@mrzxr.com" class="contact-card-btn">
+                                <i class="fas fa-paper-plane"></i> 发送邮件
+                            </a>
+                            <button class="contact-card-btn copy-btn" data-copy="zhang@mrzxr.com" style="margin-top: 0.8rem;">
+                                <i class="fas fa-copy"></i> 复制地址
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 微信卡片 -->
+                    <div class="contact-card fade-in">
+                        <div class="contact-card-icon">
+                            <i class="fab fa-weixin"></i>
+                        </div>
+                        <h3 class="contact-card-title">Wechat</h3>
+                        <p class="contact-card-desc">添加我的微信进行即时沟通</p>
+                        <div class="contact-card-action">
+                            <button class="contact-card-btn copy-btn" data-copy="xiaozhangterry">
+                                <i class="fas fa-copy"></i> 复制微信号
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- GitHub卡片 -->
+                    <div class="contact-card fade-in">
+                        <div class="contact-card-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <h3 class="contact-card-title">GitHub</h3>
+                        <p class="contact-card-desc">查看我的开源项目，了解我的技术栈和编码风格</p>
+                        <div class="contact-card-action">
+                            <a href="https://github.com/terryzhangxr" target="_blank" class="contact-card-btn">
+                                <i class="fab fa-github"></i> 访问GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 博客卡片 -->
+                    <div class="contact-card fade-in">
+                        <div class="contact-card-icon">
+                            <i class="fas fa-blog"></i>
+                        </div>
+                        <h3 class="contact-card-title">blog website</h3>
+                        <p class="contact-card-desc">阅读我的技术文章、全新项目和一些奇奇怪怪的心得</p>
+                        <div class="contact-card-action">
+                            <a href="https://www.mrzxr.com" target="_blank" class="contact-card-btn">
+                                <i class="fas fa-external-link-alt"></i> 访问博客
+                            </a>
+                        </div>
+                    </div>
+                    
+                     <!-- bilibili卡片 -->
+                    <div class="contact-card fade-in">
+                        <div class="contact-card-icon">
+                            <i class="fa-brands fa-bilibili"></i>
+                        </div>
+                        <h3 class="contact-card-title">bilibili</h3>
+                        <p class="contact-card-desc">去看看我的b站视频吧，记得关注哦 : ) </p>
+                        <div class="contact-card-action">
+                            <a href="https://space.bilibili.com/3546622533306643?spm_id_from=333.337.search-card.all.click" target="_blank" class="contact-card-btn">
+                                <i class="fa-brands fa-bilibili"></i> 前往b站个人空间
+                            </a>
+                        </div>
+                    </div>
+                 
+                    
+                  
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TerryZhang</div>
+            
+            <div class="footer-links">
+                <a href="#home">首页</a>
+                <a href="#about">关于</a>
+                <a href="#portfolio">作品</a>
+                <a href="#contact">联系</a>
+                <a href="https://www.mrzxr.com" target="_blank">博客</a>
+                <a href="https://github.com/terryzhangxr" target="_blank">GitHub</a>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 TerryZhang. 保留所有权利。</p>
+                <p>Design with <i class="fas fa-heart" style="color: #ff0080;"></i> and <i class="fas fa-code" style="color: #00d4ff;"></i></p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 复制成功提示 -->
+    <div class="copy-notification" id="copy-notification">
+        <i class="fas fa-check-circle" style="color: #00d4ff; margin-right: 8px;"></i>
+        <span id="copy-message">已复制到剪贴板</span>
+    </div>
+    
+    <!-- 引入GSAP库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <!-- 引入粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // 等待页面加载
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载动画
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                document.getElementById('loading-screen').style.visibility = 'hidden';
+            }, 800);
+            
+            // 初始化粒子背景
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#00d4ff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#00d4ff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+            
+            // 移动端菜单切换
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const navLinks = document.getElementById('nav-links');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // 导航栏滚动效果
+            const header = document.getElementById('main-header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // 导航链接点击效果
+            const navItems = document.querySelectorAll('.nav-links a');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // 移除所有active类
+                    navItems.forEach(link => link.classList.remove('active'));
+                    // 为当前点击项添加active类
+                    item.classList.add('active');
+                    
+                    // 如果是移动端，关闭菜单
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            });
+            
+            // 作品集筛选功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const photoCards = document.querySelectorAll('.photo-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 移除所有active类
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // 为当前点击按钮添加active类
+                    button.classList.add('active');
+                    
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    photoCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'block';
+                            // 添加淡入动画
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 10);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 滚动动画
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // 为所有fade-in元素添加滚动动画
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(element => {
+                gsap.fromTo(element,
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: element,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+            
+            // 卡片悬停效果增强
+            const cards = document.querySelectorAll('.photo-card, .stat-item, .contact-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, { scale: 1.03, duration: 0.3 });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, { scale: 1, duration: 0.3 });
+                });
+            });
+            
+            // 英雄区域文字动画
+            const heroTitle = document.querySelector('.hero h1');
+            gsap.fromTo(heroTitle,
+                { opacity: 0, y: -30 },
+                { opacity: 1, y: 0, duration: 1.2, delay: 0.5 }
+            );
+            
+            // 技术栈图标动画
+            const techItems = document.querySelectorAll('.tech-item');
+            techItems.forEach((item, index) => {
+                gsap.fromTo(item,
+                    { opacity: 0, x: -20 },
+                    { opacity: 1, x: 0, duration: 0.5, delay: 1 + index * 0.2 }
+                );
+            });
+            
+            // 添加视差滚动效果
+            gsap.to("#tech-bg", {
+                backgroundPosition: "50% 100%",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true
+                }
+            });
+            
+            // 初始化时检查滚动位置，更新导航栏
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            }
+            
+            // 复制功能
+            const copyNotification = document.getElementById('copy-notification');
+            const copyMessage = document.getElementById('copy-message');
+            
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.getAttribute('data-copy');
+                    
+                    // 使用现代剪贴板API
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // 显示复制成功提示
+                        copyMessage.textContent = `已复制: ${textToCopy}`;
+                        copyNotification.classList.add('show');
+                        
+                        // 3秒后隐藏提示
+                        setTimeout(() => {
+                            copyNotification.classList.remove('show');
+                        }, 3000);
+                    }).catch(err => {
+                        // 如果剪贴板API不可用，使用后备方法
+                        const textArea = document.createElement('textarea');
+                        textArea.value = textToCopy;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        
+                        try {
+                            document.execCommand('copy');
+                            copyMessage.textContent = `已复制: ${textToCopy}`;
+                            copyNotification.classList.add('show');
+                            
+                            setTimeout(() => {
+                                copyNotification.classList.remove('show');
+                            }, 3000);
+                        } catch (err) {
+                            copyMessage.textContent = '复制失败，请手动复制';
+                            copyNotification.classList.add('show');
+                            
+                            setTimeout(() => {
+                                copyNotification.classList.remove('show');
+                            }, 3000);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                    });
+                });
+            });
+            
+            // 联系卡片动画增强
+            const contactCards = document.querySelectorAll('.contact-card');
+            contactCards.forEach((card, index) => {
+                // 为每个卡片添加延迟动画
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50, scale: 0.9 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        delay: 0.1 * index,
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+</html>
