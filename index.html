@@ -3,60 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TerryZhang | Portfolio</title>
+    <title>TerryZhang | ERROR_404_PORTFOLIO</title>
     <link rel="icon" href="https://s2.loli.net/2025/01/21/wmMYhAlqsVDoaPp.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* 极简高级暗黑配色 */
-            --bg-base: #000000;
+            /* 后朋克/粗野主义配色 */
+            --bg-base: #050505;
             --bg-surface: #0a0a0a;
-            --bg-surface-hover: #141414;
-            --border-color: #222222;
-            --border-highlight: #333333;
-            --text-primary: #ededed;
-            --text-secondary: #888888;
-            --accent-color: #3b82f6; /* 克制的科技蓝 */
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --border-color: #333333;
+            --border-highlight: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #444444;
+            --text-dim: #222222;
+            --accent-color: #ff003c; /* 赛博霓虹红 */
+            --accent-glow: rgba(255, 0, 60, 0.4);
+            --font-pixel: 'VT323', monospace;
+            --font-mono: 'Space Mono', monospace;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-variant-numeric: tabular-nums;
+            border-radius: 0 !important; /* 全局抹除圆角，绝对直角 */
+            cursor: crosshair; /* 准星鼠标指针 */
         }
         
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto; /* 交给 GSAP 处理平滑 */
+            background-color: var(--bg-base);
         }
         
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: var(--font-mono);
             background-color: var(--bg-base);
             color: var(--text-primary);
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            -webkit-font-smoothing: none; /* 禁用平滑，保留像素颗粒感 */
         }
 
-        /* 纯 CSS 高级点阵背景 */
-        .dot-grid {
+        /* 纯 CSS CRT 扫描线背景 */
+        .crt-scanlines {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
-            background-size: 32px 32px;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* 噪点背景 */
+        .noise-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
             z-index: -1;
-            opacity: 0.5;
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
         
-        /* 导航栏 - 毛玻璃效果 */
+        /* 导航栏 - 极简线条框 */
         header {
             position: fixed;
             top: 0;
@@ -66,36 +80,34 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid transparent;
-            transition: var(--transition);
+            background-color: var(--bg-base);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s;
         }
         
         header.scrolled {
             padding: 1rem 5%;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--accent-color);
         }
         
         .logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 1.2rem;
+            font-family: var(--font-pixel);
+            font-size: 2rem;
             color: var(--text-primary);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        .logo::before {
-            content: '~/';
+        .logo::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
             color: var(--accent-color);
         }
         
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
         }
         
@@ -103,415 +115,407 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.9rem;
-            font-family: 'JetBrains Mono', monospace;
-            transition: var(--transition);
+            text-transform: uppercase;
+            transition: color 0.2s;
+            position: relative;
         }
         
         .nav-links a:hover, .nav-links a.active {
-            color: var(--text-primary);
+            color: var(--accent-color);
+            background-color: var(--text-primary);
+            color: var(--bg-base);
+            padding: 0 4px;
         }
 
         .mobile-menu-btn {
             display: none;
             background: none;
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
             font-size: 1.2rem;
+            padding: 0.2rem 0.5rem;
             cursor: pointer;
         }
         
         main { margin-top: 80px; }
-        section { padding: 8rem 5%; position: relative; }
+        section { padding: 6rem 5%; position: relative; }
         
-        /* 英雄区域 - 代码打字机风格 */
+        /* 英雄区域 - 故障像素艺术 */
         .hero {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            min-height: 80vh;
+            min-height: 85vh;
             max-width: 1000px;
             margin: 0 auto;
         }
         
         .hero-subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .hero-subtitle::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #10b981; /* 类似终端绿灯 */
-            border-radius: 50%;
+            font-family: var(--font-pixel);
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .hero h1 {
-            font-size: 4rem;
-            font-weight: 600;
-            letter-spacing: -0.05em;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-        }
-
-        .hero h1 .highlight {
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-pixel);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            color: var(--text-primary);
         }
 
-        /* 闪烁光标 */
-        .cursor {
+        /* 故障悬停效果 */
+        .glitch-hover {
+            position: relative;
             display: inline-block;
-            width: 12px;
-            height: 1em;
-            background-color: var(--accent-color);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-            margin-left: 5px;
+        }
+        
+        .glitch-hover:hover::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: 2px 0 blue;
+            top: 0;
+            color: white;
+            background: black;
+            overflow: hidden;
+            animation: noise-anim 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-hover:hover::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -2px 0 var(--accent-color);
+            top: 0;
+            color: white;
+            background: black;
+            overflow: hidden;
+            animation: noise-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes noise-anim {
+            0% { clip-path: inset(40% 0 61% 0); }
+            20% { clip-path: inset(92% 0 1% 0); }
+            40% { clip-path: inset(43% 0 1% 0); }
+            60% { clip-path: inset(25% 0 58% 0); }
+            80% { clip-path: inset(54% 0 7% 0); }
+            100% { clip-path: inset(58% 0 43% 0); }
+        }
+        @keyframes noise-anim-2 {
+            0% { clip-path: inset(15% 0 81% 0); }
+            20% { clip-path: inset(8% 0 82% 0); }
+            40% { clip-path: inset(73% 0 13% 0); }
+            60% { clip-path: inset(4% 0 6% 0); }
+            80% { clip-path: inset(84% 0 1% 0); }
+            100% { clip-path: inset(21% 0 63% 0); }
         }
 
         @keyframes blink { 50% { opacity: 0; } }
         
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-        }
-        
+        /* 标签 - 粗野实体阴影 */
         .hero-badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.8rem;
+            gap: 1rem;
+            margin-top: 1rem;
         }
         
-        /* 代码感 Badge */
         .badge {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-base);
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
             font-size: 0.8rem;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px var(--border-color);
+            transition: all 0.1s;
         }
-
-        .badge::before { content: '`'; opacity: 0.5; }
-        .badge::after { content: '`'; opacity: 0.5; }
         
         .badge:hover {
-            border-color: var(--text-primary);
-            color: var(--text-primary);
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--accent-color);
+            background-color: var(--text-primary);
+            color: var(--bg-base);
         }
         
-        /* 统一的区块标题 */
+        /* 区块标题 */
         .section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .section-title::before {
-            content: '/*';
-            color: var(--text-secondary);
-        }
-        .section-title::after {
-            content: '*/';
-            color: var(--text-secondary);
-        }
-        .section-title span {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border-color), transparent);
-            margin-left: 1rem;
+            font-family: var(--font-pixel);
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 1rem;
+            display: inline-block;
+            width: 100%;
         }
         
         /* 关于区域 */
         .about-content {
             display: grid;
-            grid-template-columns: 3fr 2fr;
-            gap: 5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
         }
         
         .about-text p {
-            color: var(--text-secondary);
+            font-size: 1.1rem;
             margin-bottom: 1.5rem;
-            font-size: 1.05rem;
+            /* 预设暗色，为 GSAP 滚动点亮做准备 */
+            color: var(--text-dim);
         }
 
-        /* 数据统计面板 - JSON 风格 */
+        /* 数据统计面板 - 极简表格风格 */
         .about-stats {
-            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2rem;
             margin-top: 3rem;
-            font-family: 'JetBrains Mono', monospace;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
         }
-
-        .stats-bracket { color: var(--text-secondary); }
         
         .stat-item {
-            display: flex;
-            padding: 0.5rem 0 0.5rem 2rem;
-            transition: var(--transition);
-        }
-        
-        .stat-item:hover { background-color: rgba(255,255,255,0.02); }
-        
-        .stat-label { color: #f87171; } /* 代码高亮红色 */
-        .stat-label::after { content: '": '; color: var(--text-secondary); }
-        .stat-label::before { content: '"'; }
-        
-        .stat-number { color: #60a5fa; } /* 代码高亮蓝色 */
-        .stat-number::after { content: ','; color: var(--text-secondary); }
-        
-        /* 技术栈卡片 - IDE 终端风格 */
-        .visual-card {
-            background-color: var(--bg-surface);
+            padding: 1.5rem;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .terminal-header {
-            background-color: #111;
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .dot-r { background-color: #ff5f56; }
-        .dot-y { background-color: #ffbd2e; }
-        .dot-g { background-color: #27c93f; }
-
-        .visual-content { padding: 2rem; }
-        .visual-content h3 { font-size: 1rem; margin-bottom: 1.5rem; color: var(--text-secondary); }
-        
-        .tech-stack {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+        }
+        
+        .stat-number { 
+            font-family: var(--font-pixel); 
+            font-size: 3rem; 
+            color: var(--accent-color); 
+            line-height: 1;
+        }
+        .stat-label { 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            color: var(--text-secondary); 
+            margin-top: 0.5rem;
+        }
+        
+        /* 技能列表 - 控制台风格 */
+        .tech-stack {
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            background: #080808;
+            box-shadow: 8px 8px 0px var(--border-color);
+        }
+
+        .tech-stack-header {
+            font-family: var(--font-pixel);
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
         }
         
         .tech-item {
             display: flex;
             align-items: center;
             gap: 1rem;
+            margin-bottom: 1rem;
             color: var(--text-primary);
         }
 
-        .tech-item i { font-size: 1.2rem; color: var(--text-secondary); width: 24px; text-align: center; }
+        .tech-item i { color: var(--text-secondary); width: 20px; }
+        .tech-item span { font-size: 0.9rem; }
         
         /* 作品集区域 */
-        .portfolio-wrapper { max-width: 1200px; margin: 0 auto; }
-
         .portfolio-filter {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
             margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
+            flex-wrap: wrap;
         }
         
         .filter-btn {
             background: none;
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-family: var(--font-pixel);
+            font-size: 1.2rem;
+            padding: 0.5rem 1.5rem;
             cursor: pointer;
-            transition: var(--transition);
-            position: relative;
+            text-transform: uppercase;
         }
         
-        .filter-btn.active, .filter-btn:hover { color: var(--text-primary); }
-        
-        .filter-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 0;
-            width: 100%;
-            height: 2px;
+        .filter-btn.active, .filter-btn:hover { 
+            border-color: var(--text-primary);
+            color: var(--bg-base);
             background-color: var(--text-primary);
         }
         
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 3rem;
         }
         
-        /* 高级极简卡片 */
+        /* 拍立得/粗糙卡片风格 */
         .photo-card {
-            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-base);
+            padding: 1rem;
+            box-shadow: 6px 6px 0px #111;
+            transition: all 0.2s;
         }
         
         .photo-card:hover {
-            border-color: var(--border-highlight);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0px var(--accent-color);
+            border-color: var(--text-primary);
         }
         
         .photo-img-container {
             width: 100%;
-            height: 220px;
+            height: 200px;
             overflow: hidden;
-            border-bottom: 1px solid var(--border-color);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            position: relative;
         }
 
         .photo-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            filter: grayscale(20%);
+            filter: grayscale(100%) contrast(120%);
+            transition: filter 0.3s;
         }
         
         .photo-card:hover .photo-img {
-            transform: scale(1.05);
-            filter: grayscale(0%);
+            filter: grayscale(0%) contrast(110%);
         }
         
-        .photo-info { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-        
         .photo-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 0.3rem;
+            font-family: var(--font-pixel);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
         }
         
         .photo-date {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-color);
             margin-bottom: 1rem;
         }
         
         .photo-description {
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .photo-link {
-            margin-top: auto;
-            color: var(--text-primary);
-            font-size: 0.85rem;
+            color: var(--bg-base);
+            background-color: var(--text-primary);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
+            display: inline-block;
+            font-weight: bold;
         }
-
-        .photo-link:hover { color: var(--accent-color); gap: 0.8rem; }
         
         /* 联系区域 */
-        .contact-content { max-width: 800px; margin: 0 auto; text-align: center; }
-        
-        .contact-info p { color: var(--text-secondary); margin-bottom: 4rem; }
-        
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            text-align: left;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
         
         .contact-card {
-            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
+            padding: 2rem;
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
             text-decoration: none;
             color: var(--text-primary);
-            transition: var(--transition);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
         
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--text-primary);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.2s;
+            z-index: -1;
+        }
+
         .contact-card:hover {
-            background-color: var(--bg-surface-hover);
-            border-color: var(--border-highlight);
+            color: var(--bg-base);
+            border-color: var(--text-primary);
+        }
+
+        .contact-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .contact-card:hover .contact-icon,
+        .contact-card:hover p {
+            color: var(--bg-base);
         }
         
         .contact-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #111;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+            font-size: 2rem;
+            color: var(--text-primary);
         }
         
-        .contact-text h3 { font-size: 1rem; font-weight: 500; }
-        .contact-text p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; font-family: 'JetBrains Mono', monospace;}
+        .contact-text h3 { 
+            font-family: var(--font-pixel);
+            font-size: 1.8rem; 
+            text-transform: uppercase;
+        }
+        .contact-text p { 
+            font-size: 0.85rem; 
+            color: var(--text-secondary); 
+        }
 
-        /* 复制成功提示 */
+        /* 提示框 */
         .copy-notification {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background-color: var(--text-primary);
-            color: var(--bg-base);
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            background-color: var(--accent-color);
+            color: var(--text-primary);
+            padding: 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1.2rem;
+            text-transform: uppercase;
             z-index: 10000;
-            transform: translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(120%);
+            transition: transform 0.2s cubic-bezier(0,0,0,1);
+            border: 2px solid white;
         }
-        .copy-notification.show { transform: translateY(0); opacity: 1; }
+        .copy-notification.show { transform: translateX(0); }
         
         /* 页脚 */
         footer {
             border-top: 1px solid var(--border-color);
-            padding: 3rem 5%;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
+            padding: 2rem 5%;
+            font-family: var(--font-pixel);
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 992px) {
-            .about-content { grid-template-columns: 1fr; gap: 3rem; }
-            .hero h1 { font-size: 3rem; }
-        }
-        
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -527,241 +531,270 @@
             }
             .nav-links.active { display: flex; }
             .mobile-menu-btn { display: block; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.5rem; }
+            .about-content { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
-        
-        /* 自定义滚动条 */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        
-        /* 简单的初始淡入 */
-        .fade-in { opacity: 0; transform: translateY(15px); }
+
+        /* 初始淡入 */
+        .fade-in { opacity: 0; }
     </style>
 </head>
 <body>
-    <div class="dot-grid"></div>
+    <div class="crt-scanlines"></div>
+    <div class="noise-bg"></div>
     
     <header id="main-header">
-        <a href="#" class="logo">TerryZhang</a>
-        <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <a href="#" class="logo">TR_ZHANG</a>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">[ MENU ]</button>
         <ul class="nav-links" id="nav-links">
-            <li><a href="#home" class="active">01. 首页</a></li>
-            <li><a href="#about">02. 关于</a></li>
-            <li><a href="#portfolio">03. 作品</a></li>
-            <li><a href="#contact">04. 联系</a></li>
+            <li><a href="#home" class="active">01_INIT</a></li>
+            <li><a href="#about">02_SYS.INFO</a></li>
+            <li><a href="#portfolio">03_ARCHIVE</a></li>
+            <li><a href="#contact">04_PING</a></li>
         </ul>
     </header>
     
     <main>
         <section id="home" class="hero">
-            <div class="hero-subtitle fade-in">System Online. Location: Shanghai</div>
-            <h1 class="fade-in">
-                Hi, I'm Terry<br>
-                <span class="highlight">Developer & Creator</span><span class="cursor"></span>
+            <div class="hero-subtitle fade-in">> ./run_profile.sh</div>
+            <h1 class="fade-in glitch-hover" data-text="TERRY ZHANG">
+                TERRY ZHANG
             </h1>
-            <p class="fade-in">专注于 Python 开发与 Web 技术。用代码构建逻辑框架，用镜头记录世界切片。目前是一名初中生，探索数字与现实的边界。</p>
+            <h1 class="fade-in glitch-hover" data-text="CREATOR / DEV" style="color: var(--text-secondary);">
+                CREATOR / DEV
+            </h1>
             
             <div class="hero-badges fade-in">
-                <div class="badge">Python</div>
-                <div class="badge">Web Front-end</div>
-                <div class="badge">Photography</div>
-                <div class="badge">Lego MOC</div>
+                <div class="badge">SYS: Python</div>
+                <div class="badge">UI: Web Front-end</div>
+                <div class="badge">OPTICS: Photography</div>
+                <div class="badge">HARDWARE: Lego MOC</div>
             </div>
         </section>
         
         <section id="about">
-            <h2 class="section-title fade-in">About Me<span></span></h2>
+            <h2 class="section-title fade-in">> SYS.INFO</h2>
             <div class="about-content">
-                <div class="about-text fade-in">
-                    <p>我出生于 2011 年的夏天，目前在上海就读初三。</p>
-                    <p>我热爱编程、乐高 MOC 和天文，同时也是航空与铁道的发烧友。技术于我而言，不仅是敲击键盘的机械动作，更是将脑海中的抽象思维具象化的过程。</p>
-                    <p>在闲暇时间，我会玩玩音乐（小号十级，曾任校管乐团团长），或者折腾一下最新的数码科技。我相信技术的理性与艺术的感性是可以完美交融的。</p>
+                <div class="about-text">
+                    <p class="scroll-light-up">我出生于 2011 年的夏天，目前在上海就读初三。</p>
+                    <p class="scroll-light-up">热爱编程、乐高 MOC 和天文，同时也是航空与铁道的发烧友。技术于我而言，不仅是敲击键盘的机械动作，更是将脑海中的抽象思维强行剥离并具象化的过程。</p>
+                    <p class="scroll-light-up">闲暇时间我会接触音乐（小号十级，曾任校管乐团团长），或者折腾最新的数码载体。我相信机器的绝对理智与艺术的感性噪音是可以产生完美共振的。</p>
                     
-                    <div class="about-stats">
-                        <div class="stats-bracket">{</div>
+                    <div class="about-stats fade-in">
                         <div class="stat-item">
-                            <span class="stat-label">languages</span>
                             <span class="stat-number">3+</span>
+                            <span class="stat-label">Languages</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">repositories</span>
                             <span class="stat-number">10+</span>
+                            <span class="stat-label">Repos</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">lego_mocs</span>
                             <span class="stat-number">10+</span>
+                            <span class="stat-label">MOCs</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">photos</span>
                             <span class="stat-number">25+</span>
+                            <span class="stat-label">Visuals</span>
                         </div>
-                        <div class="stats-bracket">}</div>
                     </div>
                 </div>
                 
                 <div class="about-visual fade-in">
-                    <div class="visual-card">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-r"></div>
-                            <div class="terminal-dot dot-y"></div>
-                            <div class="terminal-dot dot-g"></div>
-                        </div>
-                        <div class="visual-content">
-                            <h3>~ / tech-stack</h3>
-                            <div class="tech-stack">
-                                <div class="tech-item"><i class="fab fa-python"></i><span>Python (Chatbot, Pi, Games)</span></div>
-                                <div class="tech-item"><i class="fab fa-js"></i><span>JavaScript / ES6</span></div>
-                                <div class="tech-item"><i class="fab fa-html5"></i><span>HTML5 / CSS3</span></div>
-                                <div class="tech-item"><i class="fas fa-cube"></i><span>Lego Studio (3D Design)</span></div>
-                            </div>
-                        </div>
+                    <div class="tech-stack">
+                        <div class="tech-stack-header">ROOT@TECH_STACK:~#</div>
+                        <div class="tech-item"><i class="fab fa-python"></i><span>Python / Backend & Pi</span></div>
+                        <div class="tech-item"><i class="fab fa-js"></i><span>JavaScript / ES6</span></div>
+                        <div class="tech-item"><i class="fab fa-html5"></i><span>HTML5 / CSS3</span></div>
+                        <div class="tech-item"><i class="fas fa-cube"></i><span>Lego Studio / 3D Mod</span></div>
+                        <div class="tech-item"><i class="fas fa-terminal"></i><span>Terminal / Bash</span></div>
                     </div>
                 </div>
             </div>
         </section>
         
         <section id="portfolio">
-            <div class="portfolio-wrapper">
-                <h2 class="section-title fade-in">Projects & Works<span></span></h2>
-                
-                <div class="portfolio-filter fade-in">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="tech">Code</button>
-                    <button class="filter-btn" data-filter="sightseeing">Photography</button>
-                    <button class="filter-btn" data-filter="other">MOC & Other</button>
+            <h2 class="section-title fade-in">> ARCHIVE_DATA</h2>
+            
+            <div class="portfolio-filter fade-in">
+                <button class="filter-btn active" data-filter="all">[ ALL ]</button>
+                <button class="filter-btn" data-filter="tech">[ CODE ]</button>
+                <button class="filter-btn" data-filter="sightseeing">[ OPTICS ]</button>
+                <button class="filter-btn" data-filter="other">[ HARDWARE ]</button>
+            </div>
+            
+            <div class="gallery">
+                <div class="photo-card fade-in" data-category="tech">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-12-14%20211827.png" alt="Typace" class="photo-img" loading="lazy">
+                    </div>
+                    <h3 class="photo-title">Typace Framework</h3>
+                    <div class="photo-date">DATE: 2025.04</div>
+                    <p class="photo-description">自主开发的一个博客框架，目前正在完善开源计划中。</p>
+                    <a href="https://typace.mrzxr.com" target="_blank" class="photo-link">EXECUTE_LINK</a>
                 </div>
-                
-                <div class="gallery">
-                    <div class="photo-card fade-in" data-category="tech">
-                        <div class="photo-img-container">
-                            <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-12-14%20211827.png" alt="Typace" class="photo-img" loading="lazy">
-                        </div>
-                        <div class="photo-info">
-                            <div class="photo-date">2025.04</div>
-                            <h3 class="photo-title">Typace Blog Framework</h3>
-                            <p class="photo-description">自主开发的一个博客框架，目前正在完善开源计划中。</p>
-                            <a href="https://typace.mrzxr.com" target="_blank" class="photo-link">View Live <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
 
-                    <div class="photo-card fade-in" data-category="tech">
-                        <div class="photo-img-container">
-                            <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555" alt="Blog" class="photo-img" loading="lazy">
-                        </div>
-                        <div class="photo-info">
-                            <div class="photo-date">2025.01</div>
-                            <h3 class="photo-title">Personal Blog</h3>
-                            <p class="photo-description">基于 hexo-theme-redefine 搭建的个人技术博客与生活随笔存放地。</p>
-                            <a href="https://www.mrzxr.com" target="_blank" class="photo-link">Read Blog <i class="fas fa-arrow-right"></i></a>
-                        </div>
+                <div class="photo-card fade-in" data-category="tech">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555" alt="Blog" class="photo-img" loading="lazy">
                     </div>
+                    <h3 class="photo-title">Personal Node</h3>
+                    <div class="photo-date">DATE: 2025.01</div>
+                    <p class="photo-description">基于 hexo-theme-redefine 搭建的个人技术博客与数据终端。</p>
+                    <a href="https://www.mrzxr.com" target="_blank" class="photo-link">EXECUTE_LINK</a>
+                </div>
 
-                    <div class="photo-card fade-in" data-category="other">
-                        <div class="photo-img-container">
-                            <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405" alt="Lego p42dc" class="photo-img" loading="lazy">
-                        </div>
-                        <div class="photo-info">
-                            <div class="photo-date">2024.08</div>
-                            <h3 class="photo-title">Lego Train P42DC</h3>
-                            <p class="photo-description">原型为美国国铁 P42DC 型内燃机车，先在软件中设计，后实体化。</p>
-                            <a href="https://www.bilibili.com/video/BV1vdHAeUE8f" target="_blank" class="photo-link">Watch Video <i class="fas fa-arrow-right"></i></a>
-                        </div>
+                <div class="photo-card fade-in" data-category="other">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405" alt="Lego p42dc" class="photo-img" loading="lazy">
                     </div>
+                    <h3 class="photo-title">Lego Train P42DC</h3>
+                    <div class="photo-date">DATE: 2024.08</div>
+                    <p class="photo-description">原型美国国铁 P42DC 实体化硬件构建记录。</p>
+                    <a href="https://www.bilibili.com/video/BV1vdHAeUE8f" target="_blank" class="photo-link">PLAY_VIDEO</a>
+                </div>
 
-                    <div class="photo-card fade-in" data-category="sightseeing">
-                        <div class="photo-img-container">
-                            <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321" alt="tree" class="photo-img" loading="lazy">
-                        </div>
-                        <div class="photo-info">
-                            <div class="photo-date">2024.07 · Beijing</div>
-                            <h3 class="photo-title">国博前雪松</h3>
-                            <p class="photo-description">参观完毕后摄于中国国家博物馆前。</p>
-                        </div>
+                <div class="photo-card fade-in" data-category="sightseeing">
+                    <div class="photo-img-container">
+                        <img src="https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321" alt="tree" class="photo-img" loading="lazy">
                     </div>
+                    <h3 class="photo-title">Cedar at Museum</h3>
+                    <div class="photo-date">LOC: BEIJING | 2024.07</div>
+                    <p class="photo-description">光学记录：摄于中国国家博物馆前。</p>
                 </div>
             </div>
         </section>
         
         <section id="contact">
-            <div class="contact-content">
-                <h2 class="section-title fade-in" style="justify-content: center;">Contact<span></span></h2>
-                <div class="contact-info fade-in">
-                    <p>无论是技术交流、项目探讨，还是分享一张好照片，随时欢迎给我发送消息。</p>
-                </div>
+            <h2 class="section-title fade-in">> PING_REQUEST</h2>
+            <div class="contact-grid">
+                <a href="mailto:zhang@mrzxr.com" class="contact-card fade-in copy-trigger" data-copy="zhang@mrzxr.com">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-text">
+                        <h3>EMAIL</h3>
+                        <p>zhang@mrzxr.com</p>
+                        <p style="color: var(--accent-color); margin-top: 5px;">[ CLICK_TO_COPY ]</p>
+                    </div>
+                </a>
                 
-                <div class="contact-grid">
-                    <a href="mailto:zhang@mrzxr.com" class="contact-card fade-in copy-trigger" data-copy="zhang@mrzxr.com">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-text">
-                            <h3>Email</h3>
-                            <p>zhang@mrzxr.com (Click to copy)</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://github.com/terryzhangxr" target="_blank" class="contact-card fade-in">
-                        <div class="contact-icon"><i class="fab fa-github"></i></div>
-                        <div class="contact-text">
-                            <h3>GitHub</h3>
-                            <p>@terryzhangxr</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://www.mrzxr.com" target="_blank" class="contact-card fade-in">
-                        <div class="contact-icon"><i class="fas fa-blog"></i></div>
-                        <div class="contact-text">
-                            <h3>Blog</h3>
-                            <p>www.mrzxr.com</p>
-                        </div>
-                    </a>
+                <a href="https://github.com/terryzhangxr" target="_blank" class="contact-card fade-in">
+                    <div class="contact-icon"><i class="fab fa-github"></i></div>
+                    <div class="contact-text">
+                        <h3>GITHUB</h3>
+                        <p>@terryzhangxr</p>
+                        <p style="color: var(--accent-color); margin-top: 5px;">[ EXTERNAL_LINK ]</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.mrzxr.com" target="_blank" class="contact-card fade-in">
+                    <div class="contact-icon"><i class="fas fa-terminal"></i></div>
+                    <div class="contact-text">
+                        <h3>BLOG</h3>
+                        <p>www.mrzxr.com</p>
+                        <p style="color: var(--accent-color); margin-top: 5px;">[ EXTERNAL_LINK ]</p>
+                    </div>
+                </a>
 
-                    <a href="https://space.bilibili.com/3546622533306643" target="_blank" class="contact-card fade-in">
-                        <div class="contact-icon"><i class="fa-brands fa-bilibili"></i></div>
-                        <div class="contact-text">
-                            <h3>Bilibili</h3>
-                            <p>UID: 3546622533306643</p>
-                        </div>
-                    </a>
-                </div>
+                <a href="https://space.bilibili.com/3546622533306643" target="_blank" class="contact-card fade-in">
+                    <div class="contact-icon"><i class="fa-brands fa-bilibili"></i></div>
+                    <div class="contact-text">
+                        <h3>BILIBILI</h3>
+                        <p>UID: 3546622533306643</p>
+                        <p style="color: var(--accent-color); margin-top: 5px;">[ EXTERNAL_LINK ]</p>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
     
     <footer>
-        <div>© 2025 TerryZhang. All rights reserved.</div>
-        <div style="margin-top: 0.5rem;">System.out.println("Built with pure code.");</div>
+        <div>© 2025 TERRY ZHANG.</div>
+        <div>SYS_STATUS: ONLINE.</div>
     </footer>
     
-    <div class="copy-notification" id="copy-notification">Copied to clipboard!</div>
+    <div class="copy-notification" id="copy-notification">DATA_COPIED_SUCCESSFULLY</div>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // ==========================================
+            // 高级文字滚动点亮动画 (Scrub Reveal)
+            // ==========================================
+            const textRevealElements = document.querySelectorAll('.scroll-light-up');
             
-            // 移动端菜单
+            textRevealElements.forEach(el => {
+                // 将整段文字打散成独立包裹的字/词
+                const text = el.innerText;
+                el.innerHTML = ''; // 清空原本内容
+                
+                // 为了兼容中文，按字符分割（如果纯英文可以按空格分）
+                const chars = text.split(''); 
+                
+                chars.forEach(char => {
+                    const span = document.createElement('span');
+                    span.innerText = char;
+                    // 设置初始暗色
+                    span.style.color = 'var(--text-dim)'; 
+                    span.style.transition = 'text-shadow 0.1s';
+                    el.appendChild(span);
+                });
+
+                // GSAP ScrollTrigger 动画
+                gsap.to(el.querySelectorAll('span'), {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%", // 当段落顶部到达视口 80% 时开始
+                        end: "bottom 60%", // 当段落底部到达视口 60% 时结束
+                        scrub: 0.5,       // 跟随滚动条（加入0.5秒平滑延迟）
+                    },
+                    color: 'var(--text-primary)', // 滚动时变成亮白色
+                    textShadow: '0 0 8px rgba(255,255,255,0.8)', // 加入轻微发光
+                    stagger: 0.1 // 依次点亮
+                });
+            });
+
+            // ==========================================
+            // 常规组件的进入动画
+            // ==========================================
+            document.querySelectorAll('.fade-in').forEach((el) => {
+                gsap.fromTo(el, 
+                    { opacity: 0, y: 30 },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 0.8, 
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 90%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+            });
+
+            // ==========================================
+            // 杂项功能 (菜单、过滤、复制)
+            // ==========================================
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const navLinks = document.getElementById('nav-links');
             mobileMenuBtn.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
-                mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
-                    ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
             });
             
-            // 导航栏滚动模糊效果
             const header = document.getElementById('main-header');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) header.classList.add('scrolled');
                 else header.classList.remove('scrolled');
             });
             
-            // 作品集过滤 (更平滑的实现)
             const filterButtons = document.querySelectorAll('.filter-btn');
             const photoCards = document.querySelectorAll('.photo-card');
-            
             filterButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     filterButtons.forEach(btn => btn.classList.remove('active'));
@@ -770,8 +803,8 @@
                     
                     photoCards.forEach(card => {
                         if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                            card.style.display = 'flex';
-                            gsap.fromTo(card, {opacity: 0, scale: 0.95}, {opacity: 1, scale: 1, duration: 0.4});
+                            card.style.display = 'block';
+                            gsap.fromTo(card, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.3});
                         } else {
                             card.style.display = 'none';
                         }
@@ -779,10 +812,8 @@
                 });
             });
             
-            // 复制到剪贴板
             const copyTriggers = document.querySelectorAll('.copy-trigger');
             const notification = document.getElementById('copy-notification');
-            
             copyTriggers.forEach(trigger => {
                 trigger.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -791,23 +822,6 @@
                         notification.classList.add('show');
                         setTimeout(() => notification.classList.remove('show'), 2000);
                     });
-                });
-            });
-            
-            // GSAP 滚动动画 (更内敛的缓动效果)
-            gsap.registerPlugin(ScrollTrigger);
-            
-            document.querySelectorAll('.fade-in').forEach((el, index) => {
-                gsap.to(el, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    }
                 });
             });
         });
