@@ -76,7 +76,7 @@ window.portfolioData = {
         ]
     },
     moments: {
-        title: "> SYS.LOGS",
+        title: "> PERSONAL LOGS",
         items: [
             {
                 date: "2026.05.16",
