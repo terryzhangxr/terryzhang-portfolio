@@ -77,6 +77,34 @@ window.portfolioData = {
             }
         ]
     },
+    // 新增：说说/日志板块
+    moments: {
+        title: "> SYS.LOGS",
+        items: [
+            {
+                date: "2026.05.10",
+                content: "今天重构了整个作品集的代码，剥离了数据和视图。加入了类似朋友圈的系统日志模块，感觉整个架构清爽多了。#CodeLife",
+                location: "Shanghai",
+                images: [] // 纯文字说说可以留空数组
+            },
+            {
+                date: "2025.12.05",
+                content: "新入手的乐高零件到了，准备开个大坑，复刻一台经典的内燃机车。先在 Studio 里把图纸过一遍。期待实体化...",
+                location: "Home Lab",
+                images: [
+                    "https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405"
+                ] 
+            },
+            {
+                date: "2024.07.20",
+                content: "夏天的北京真的很热，但在国博前面看到这棵雪松，有一种莫名的宁静感。摄影的意义大概就是定格这一瞬间的光影吧。",
+                location: "Beijing",
+                images: [
+                    "https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321"
+                ]
+            }
+        ]
+    },
     contact: {
         title: "> PING_REQUEST",
         items: [
