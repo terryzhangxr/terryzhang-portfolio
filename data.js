@@ -14,8 +14,8 @@ window.portfolioData = {
             "闲暇时间我会接触音乐（小号十级，曾任校管乐团团长），或者折腾最新的数码科技。我相信机器的绝对理智与艺术的感性噪音是可以产生完美共振的。"
         ],
         stats: [
-            { number: "3+", label: "Languages" },
-            { number: "10+", label: "Repos" },
+            { number: "3+", label: "Coding Languages" },
+            { number: "30+", label: "Github Repos" },
             { number: "10+", label: "MOCs" },
             { number: "25+", label: "Photographic works" }
         ],
@@ -44,7 +44,7 @@ window.portfolioData = {
                 date: "DATE: 2025.04",
                 desc: "自主开发的一个博客框架，目前正在完善开源计划中。",
                 link: "https://typace.mrzxr.com",
-                linkText: "EXECUTE_LINK"
+                linkText: "EXTERNAL_LINK"
             },
             {
                 category: "tech",
@@ -53,7 +53,7 @@ window.portfolioData = {
                 date: "DATE: 2025.01",
                 desc: "基于 hexo-theme-redefine 搭建的个人技术博客。",
                 link: "https://www.mrzxr.com",
-                linkText: "EXECUTE_LINK"
+                linkText: "EXTERNAL_LINK"
             },
             {
                 category: "other",
