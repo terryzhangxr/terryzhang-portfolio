@@ -36,7 +36,6 @@
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
-        /* 故障特效 */
         .glitch-hover { position: relative; display: inline-block; }
         
         .glitch-hover::before, .glitch-hover::after {
@@ -145,20 +144,26 @@
             .about-content { grid-template-columns: 1fr; }
             footer { flex-direction: column; gap: 1rem; text-align: center; }
 
-            /* 平板及大号手机的排版优化 */
             .hero { min-height: 75vh; }
-            /* 💡 加大了第一档屏幕的标题尺寸，并使用了 clamp 保障边缘自适应 */
-            .hero h1 { font-size: clamp(4rem, 12vw, 5.5rem); margin-bottom: 1rem; line-height: 0.9; }
+            
+            /* 💡 两行标题死死咬住 (margin-bottom: 0.2rem) */
+            .hero h1 { font-size: clamp(4rem, 12vw, 5.5rem); margin-bottom: 0.2rem; line-height: 0.9; }
             .hero-subtitle { font-size: 1.2rem; }
+            
+            /* 💡 下方内容利用 vh 动态拉开很大距离 */
+            .hero-badges { margin-top: clamp(3.5rem, 10vh, 6rem); }
             
             .hero-btn { font-size: 1.1rem; padding: 0.5rem 1.5rem; margin-top: 2rem; box-shadow: 4px 4px 0px var(--accent-color); }
             .hero-btn:hover { box-shadow: 2px 2px 0px var(--accent-color); }
         }
 
         @media (max-width: 480px) {
-            /* 💡 超小屏幕时，标题字号更大，压紧行高允许自然换行，形成巨大的排版冲击力 */
-            .hero h1 { font-size: 3.8rem; line-height: 0.85; margin-bottom: 1.2rem; }
+            /* 💡 极小屏幕：标题字距、行高压到极限，保持 margin-bottom: 0.2rem */
+            .hero h1 { font-size: 3.8rem; line-height: 0.85; margin-bottom: 0.2rem; }
             .hero-subtitle { font-size: 1rem; margin-bottom: 0.8rem; }
+            
+            /* 💡 极小屏幕：向下推开更夸张的呼吸距离 */
+            .hero-badges { margin-top: clamp(4rem, 12vh, 7rem); }
             .badge { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
             
             .hero-btn { font-size: 1rem; padding: 0.5rem 1.2rem; margin-top: 1.5rem; box-shadow: 3px 3px 0px var(--accent-color); border-width: 1px; }
