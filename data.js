@@ -17,7 +17,7 @@ window.portfolioData = {
             { number: "3+", label: "Languages" },
             { number: "10+", label: "Repos" },
             { number: "10+", label: "MOCs" },
-            { number: "25+", label: "Visuals" }
+            { number: "25+", label: "Photographic works" }
         ],
         techStackTitle: "ROOT@TECH_STACK:~#",
         techStack: [
