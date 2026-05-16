@@ -146,11 +146,11 @@
 
             .hero { min-height: 75vh; }
             
-            /* 💡 两行标题死死咬住 (margin-bottom: 0.2rem) */
-            .hero h1 { font-size: clamp(4rem, 12vw, 5.5rem); margin-bottom: 0.2rem; line-height: 0.9; }
+            /* 💡 优化：微微拉开两行标题的距离 (margin-bottom 改为 1rem) */
+            .hero h1 { font-size: clamp(4rem, 12vw, 5.5rem); margin-bottom: 1rem; line-height: 0.9; }
             .hero-subtitle { font-size: 1.2rem; }
             
-            /* 💡 下方内容利用 vh 动态拉开很大距离 */
+            /* 下方内容利用 vh 动态拉开很大距离，保持视觉平衡 */
             .hero-badges { margin-top: clamp(3.5rem, 10vh, 6rem); }
             
             .hero-btn { font-size: 1.1rem; padding: 0.5rem 1.5rem; margin-top: 2rem; box-shadow: 4px 4px 0px var(--accent-color); }
@@ -158,11 +158,11 @@
         }
 
         @media (max-width: 480px) {
-            /* 💡 极小屏幕：标题字距、行高压到极限，保持 margin-bottom: 0.2rem */
-            .hero h1 { font-size: 3.8rem; line-height: 0.85; margin-bottom: 0.2rem; }
+            /* 💡 优化：超小屏幕也将两行标题的距离微微拉开 (margin-bottom 改为 0.8rem) */
+            .hero h1 { font-size: 3.8rem; line-height: 0.85; margin-bottom: 0.8rem; }
             .hero-subtitle { font-size: 1rem; margin-bottom: 0.8rem; }
             
-            /* 💡 极小屏幕：向下推开更夸张的呼吸距离 */
+            /* 下方推开呼吸距离 */
             .hero-badges { margin-top: clamp(4rem, 12vh, 7rem); }
             .badge { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
             
