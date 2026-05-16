@@ -72,24 +72,10 @@
         .photo-img-container { width: 100%; height: 200px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 1rem; background: #111; }
         .photo-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8) contrast(1.1); transition: filter 0.3s; }
         .photo-card:hover .photo-img { filter: brightness(1) contrast(1.05); }
-        
         .photo-title { font-family: var(--font-pixel); font-size: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; }
         .photo-date { font-size: 0.75rem; color: var(--accent-color); margin-bottom: 1rem; }
         .photo-description { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
         .photo-link { color: var(--bg-base); background-color: var(--text-primary); padding: 0.3rem 0.8rem; font-size: 0.8rem; text-transform: uppercase; text-decoration: none; display: inline-block; font-weight: bold; }
-        
-        .timeline { border-left: 2px dashed var(--border-color); margin-left: 1rem; padding-left: 2rem; display: flex; flex-direction: column; gap: 3rem; max-width: 800px; }
-        .moment-card { position: relative; border: 1px solid var(--border-color); background: var(--bg-base); padding: 1.5rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
-        .moment-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-primary); border-color: var(--text-primary); }
-        .moment-card::before { content: ''; position: absolute; left: -2.45rem; top: 1.5rem; width: 12px; height: 12px; background: var(--bg-base); border: 2px solid var(--accent-color); z-index: 2; transition: all 0.2s; }
-        .moment-card:hover::before { background: var(--accent-color); }
-        
-        .moment-date { font-family: var(--font-pixel); color: var(--accent-color); margin-bottom: 0.8rem; font-size: 1.3rem; }
-        .moment-content { color: var(--text-primary); margin-bottom: 1rem; font-size: 1rem; }
-        .moment-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 200px)); gap: 1rem; margin-top: 1rem; }
-        .moment-img { width: 100%; height: 120px; object-fit: cover; border: 1px solid var(--border-color); filter: brightness(0.85); transition: filter 0.3s; }
-        .moment-card:hover .moment-img { filter: brightness(1); }
-        .moment-meta { font-family: var(--font-pixel); font-size: 1rem; color: var(--text-secondary); display: flex; gap: 1.5rem; margin-top: 1.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-transform: uppercase; }
 
         .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
         .contact-card { border: 1px solid var(--border-color); padding: 2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; text-decoration: none; color: var(--text-primary); transition: all 0.2s; position: relative; overflow: hidden; }
@@ -111,13 +97,10 @@
             .nav-links.active { display: flex; }
             .mobile-menu-btn { display: block; }
             .about-content { grid-template-columns: 1fr; }
-            .timeline { margin-left: 0; padding-left: 1.5rem; }
-            .moment-card::before { left: -1.95rem; }
             footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
         .fade-in { opacity: 0; }
         
-        /* 报错信息面板样式 */
         #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #00ff00; font-family: var(--font-pixel); padding: 2rem; z-index: 99999; overflow: auto; }
         #error-overlay h1 { color: red; margin-bottom: 1rem; }
     </style>
@@ -128,14 +111,8 @@
     
     <div id="error-overlay">
         <h1>[ SYSTEM KERNEL PANIC ]</h1>
-        <p>初始化数据失败。可能的原因：</p>
-        <p>1. 浏览器缓存了旧版本的 data.js (请尝试 Ctrl+F5 强制刷新)。</p>
-        <p>2. data.js 文件和 index.html 不在同一个文件夹内。</p>
-        <p>3. data.js 内部存在语法错误。</p>
-        <div style="margin-top: 2rem; border-top: 1px dashed #0f0; padding-top: 1rem;">
-            <strong>错误日志 (Log):</strong>
-            <pre id="error-log" style="white-space: pre-wrap; margin-top: 1rem; color: #ff5555;"></pre>
-        </div>
+        <p>初始化数据失败。请检查 data.js 状态。</p>
+        <pre id="error-log" style="white-space: pre-wrap; margin-top: 1rem; color: #ff5555;"></pre>
     </div>
 
     <header id="main-header">
@@ -145,7 +122,7 @@
             <li><a href="#home" class="active">01_INIT</a></li>
             <li><a href="#about">02_SYS.INFO</a></li>
             <li><a href="#portfolio">03_ARCHIVE</a></li>
-            <li><a href="#moments">04_LOGS</a></li>
+            <li><a href="logs.html">04_LOGS</a></li>
             <li><a href="#contact">05_PING</a></li>
         </ul>
     </header>
@@ -154,7 +131,6 @@
         <section id="home" class="hero"></section>
         <section id="about"></section>
         <section id="portfolio"></section>
-        <section id="moments"></section>
         <section id="contact"></section>
     </main>
     
@@ -172,16 +148,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             try {
-                // 安全检查
                 if (typeof window.portfolioData === 'undefined') {
                     throw new Error("找不到 window.portfolioData，文件未加载或命名错误。");
                 }
                 const data = window.portfolioData;
 
-                // 容错读取：如果没有 moments 数据，给个默认空数组防崩溃
-                const momentsData = data.moments || { title: "> SYS.LOGS", items: [] };
-
-                // 1. 渲染 Hero
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                     <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -191,7 +162,6 @@
                     </div>
                 `;
 
-                // 2. 渲染 About
                 document.getElementById('about').innerHTML = `
                     <h2 class="section-title fade-in">${data.about.title}</h2>
                     <div class="about-content">
@@ -217,7 +187,6 @@
                     </div>
                 `;
 
-                // 3. 渲染 Portfolio
                 document.getElementById('portfolio').innerHTML = `
                     <h2 class="section-title fade-in">${data.portfolio.title}</h2>
                     <div class="portfolio-filter fade-in">
@@ -238,29 +207,6 @@
                     </div>
                 `;
 
-                // 4. 渲染 Moments (说说)
-                document.getElementById('moments').innerHTML = `
-                    <h2 class="section-title fade-in">${momentsData.title}</h2>
-                    <div class="timeline">
-                        ${momentsData.items.map(m => `
-                            <div class="moment-card fade-in">
-                                <div class="moment-date">[ ${m.date} ]</div>
-                                <div class="moment-content">${m.content}</div>
-                                ${m.images && m.images.length > 0 ? `
-                                    <div class="moment-images">
-                                        ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
-                                    </div>
-                                ` : ''}
-                                <div class="moment-meta">
-                                    ${m.location ? `<span><i class="fas fa-map-marker-alt"></i> LOC: ${m.location}</span>` : ''}
-                                    <span><i class="fas fa-satellite-dish"></i> BROADCAST_END</span>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-
-                // 5. 渲染 Contact
                 document.getElementById('contact').innerHTML = `
                     <h2 class="section-title fade-in">${data.contact.title}</h2>
                     <div class="contact-grid">
@@ -279,9 +225,6 @@
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-                // ==========================================
-                // 动画与交互绑定
-                // ==========================================
                 gsap.registerPlugin(ScrollTrigger);
 
                 document.querySelectorAll('.scroll-light-up').forEach(el => {
@@ -296,15 +239,8 @@
                         el.appendChild(span);
                     });
                     gsap.to(el.querySelectorAll('span'), {
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 80%",
-                            end: "bottom 60%",
-                            scrub: 0.5,
-                        },
-                        color: 'var(--text-primary)',
-                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
-                        stagger: 0.1
+                        scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 60%", scrub: 0.5 },
+                        color: 'var(--text-primary)', textShadow: '0 0 8px rgba(255,255,255,0.8)', stagger: 0.1
                     });
                 });
 
@@ -361,7 +297,6 @@
                 });
 
             } catch (err) {
-                // 如果发生任何 JS 错误，直接在页面上打印出大红字
                 const overlay = document.getElementById('error-overlay');
                 const log = document.getElementById('error-log');
                 overlay.style.display = 'block';
