@@ -10,7 +10,8 @@
     <style>
         :root {
             --bg-base: #050505; --bg-surface: #0a0a0a; --border-color: #333333; --border-highlight: #ffffff;
-            --text-primary: #ffffff; --text-secondary: #444444; --text-dim: #222222; --accent-color: #ff003c;
+            /* 重点修改了下面两个变量的颜色，提升对比度 */
+            --text-primary: #ffffff; --text-secondary: #999999; --text-dim: #555555; --accent-color: #ff003c;
             --font-pixel: 'VT323', monospace; --font-mono: 'Space Mono', monospace;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; cursor: crosshair; }
@@ -47,28 +48,8 @@
         .badge { background-color: var(--bg-base); border: 1px solid var(--text-primary); color: var(--text-primary); font-size: 0.8rem; padding: 0.5rem 1rem; text-transform: uppercase; box-shadow: 4px 4px 0px var(--border-color); transition: all 0.1s; }
         .badge:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--accent-color); background-color: var(--text-primary); color: var(--bg-base); }
         
-        /* 新增：首页直达日志的硬核按钮 */
-        .hero-btn {
-            display: inline-block;
-            font-family: var(--font-pixel);
-            font-size: 1.5rem;
-            color: var(--bg-base);
-            background-color: var(--text-primary);
-            padding: 0.6rem 2rem;
-            text-decoration: none;
-            text-transform: uppercase;
-            border: 2px solid var(--text-primary);
-            box-shadow: 6px 6px 0px var(--accent-color);
-            transition: all 0.1s;
-            margin-top: 3rem;
-            letter-spacing: 1px;
-        }
-        .hero-btn:hover {
-            transform: translate(2px, 2px);
-            box-shadow: 4px 4px 0px var(--accent-color);
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-        }
+        .hero-btn { display: inline-block; font-family: var(--font-pixel); font-size: 1.5rem; color: var(--bg-base); background-color: var(--text-primary); padding: 0.6rem 2rem; text-decoration: none; text-transform: uppercase; border: 2px solid var(--text-primary); box-shadow: 6px 6px 0px var(--accent-color); transition: all 0.1s; margin-top: 3rem; letter-spacing: 1px; }
+        .hero-btn:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0px var(--accent-color); background-color: var(--bg-base); color: var(--text-primary); }
 
         .section-title { font-family: var(--font-pixel); font-size: 3rem; text-transform: uppercase; margin-bottom: 4rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 1rem; display: inline-block; width: 100%; }
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
@@ -177,7 +158,6 @@
                 }
                 const data = window.portfolioData;
 
-                // 重点看这里：在 Hero 区域最后追加了跳转日志的按钮
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                     <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
