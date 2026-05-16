@@ -79,8 +79,14 @@ window.portfolioData = {
         title: "> SYS.LOGS",
         items: [
             {
+                date: "2026.05.16",
+                content: "英语听说测试顺利结束！",
+                location: "Shanghai",
+                images: []
+            },
+            {
                 date: "2026.05.10",
-                content: "今天重构了整个作品集的代码，剥离了数据和视图。加入了类似朋友圈的系统日志模块，感觉整个架构清爽多了。#CodeLife",
+                content: "今天重构了整个作品集的代码，改成了朋克风",
                 location: "Shanghai",
                 images: []
             },
