@@ -11,7 +11,7 @@ window.portfolioData = {
         paragraphs: [
             "我出生于 2011 年的夏天，目前在上海就读初三。",
             "热爱编程、乐高 MOC 和天文，同时也是航空与铁道的发烧友。技术于我而言，不仅是敲击键盘的机械动作，更是将脑海中的抽象思维强行剥离并具象化的过程。",
-            "闲暇时间我会接触音乐（小号十级，曾任校管乐团团长），或者折腾最新的数码载体。我相信机器的绝对理智与艺术的感性噪音是可以产生完美共振的。"
+            "闲暇时间我会接触音乐（小号十级，曾任校管乐团团长），或者折腾最新的数码科技。我相信机器的绝对理智与艺术的感性噪音是可以产生完美共振的。"
         ],
         stats: [
             { number: "3+", label: "Languages" },
@@ -33,7 +33,7 @@ window.portfolioData = {
         filters: [
             { id: "all", label: "[ ALL ]", active: true },
             { id: "tech", label: "[ CODE ]", active: false },
-            { id: "sightseeing", label: "[ OPTICS ]", active: false },
+            { id: "sightseeing", label: "[ PHOTOS ]", active: false },
             { id: "other", label: "[ HARDWARE ]", active: false }
         ],
         projects: [
@@ -51,7 +51,7 @@ window.portfolioData = {
                 img: "https://ik.imagekit.io/terryzhang/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-01-13%20213636.png?updatedAt=1737440050555",
                 title: "Personal Node",
                 date: "DATE: 2025.01",
-                desc: "基于 hexo-theme-redefine 搭建的个人技术博客与数据终端。",
+                desc: "基于 hexo-theme-redefine 搭建的个人技术博客。",
                 link: "https://www.mrzxr.com",
                 linkText: "EXECUTE_LINK"
             },
@@ -60,7 +60,7 @@ window.portfolioData = {
                 img: "https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405",
                 title: "Lego Train P42DC",
                 date: "DATE: 2024.08",
-                desc: "原型美国国铁 P42DC 实体化硬件构建记录。",
+                desc: "乐高moc美国国铁 P42DC 实体化。",
                 link: "https://www.bilibili.com/video/BV1vdHAeUE8f",
                 linkText: "PLAY_VIDEO"
             },
@@ -69,7 +69,7 @@ window.portfolioData = {
                 img: "https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121154512.jpg?updatedAt=1737445559321",
                 title: "Cedar at Museum",
                 date: "LOC: BEIJING | 2024.07",
-                desc: "光学记录：摄于中国国家博物馆前。",
+                desc: "中国国家博物馆前雪松",
                 link: null, 
                 linkText: ""
             }
@@ -92,8 +92,8 @@ window.portfolioData = {
             },
             {
                 date: "2025.12.05",
-                content: "新入手的乐高零件到了...",
-                location: "Home",
+                content: "美国国铁p42dc内燃机车实体化moc",
+                location: "Shanghai",
                 images: [
                     "https://ik.imagekit.io/terryzhang/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250121155005.jpg?updatedAt=1737445877405"
                 ] 
