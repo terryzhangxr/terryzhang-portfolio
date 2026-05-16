@@ -1,7 +1,7 @@
 // data.js
-// 个人数据配置文件
+// 你的个人数据配置文件
 
-const portfolioData = {
+window.portfolioData = {
     hero: {
         subtitle: "> ./run_profile.sh",
         name: "TERRY ZHANG",
@@ -72,7 +72,7 @@ const portfolioData = {
                 title: "Cedar at Museum",
                 date: "LOC: BEIJING | 2024.07",
                 desc: "光学记录：摄于中国国家博物馆前。",
-                link: null, // 没有链接则不显示按钮
+                link: null, 
                 linkText: ""
             }
         ]
