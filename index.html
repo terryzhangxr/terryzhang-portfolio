@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS 与之前保持一致，保留了后朋克像素美学 */
         :root {
             --bg-base: #050505;
             --bg-surface: #0a0a0a;
@@ -71,7 +70,7 @@
         .tech-item span { font-size: 0.9rem; }
         
         .portfolio-filter { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .filter-btn { background: none; border: 1px solid var(--border-color); color: var(--text-secondary); font-family: var(--font-pixel); font-size: 1.2rem; padding: 0.5rem 1.5rem; text-transform: uppercase; }
+        .filter-btn { background: none; border: 1px solid var(--border-color); color: var(--text-secondary); font-family: var(--font-pixel); font-size: 1.2rem; padding: 0.5rem 1.5rem; text-transform: uppercase; cursor: pointer; }
         .filter-btn.active, .filter-btn:hover { border-color: var(--text-primary); color: var(--bg-base); background-color: var(--text-primary); }
         .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem; }
         
@@ -146,12 +145,17 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ==========================================
-            // 1. 核心渲染逻辑：将 data.js 的数据注入 HTML
-            // ==========================================
-            const data = window.portfolioData; // 获取数据
+            // 检查数据是否成功加载
+            if (!window.portfolioData) {
+                document.body.innerHTML = '<h1 style="color:red; text-align:center; padding: 50px;">错误：未能读取到数据。请确保 data.js 文件与 index.html 在同一文件夹内。</h1>';
+                return;
+            }
+
+            const data = window.portfolioData;
             
-            // 渲染 Hero
+            // ==========================================
+            // 渲染逻辑
+            // ==========================================
             document.getElementById('home').innerHTML = `
                 <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                 <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -161,7 +165,6 @@
                 </div>
             `;
 
-            // 渲染 About
             document.getElementById('about').innerHTML = `
                 <h2 class="section-title fade-in">${data.about.title}</h2>
                 <div class="about-content">
@@ -187,7 +190,6 @@
                 </div>
             `;
 
-            // 渲染 Portfolio
             document.getElementById('portfolio').innerHTML = `
                 <h2 class="section-title fade-in">${data.portfolio.title}</h2>
                 <div class="portfolio-filter fade-in">
@@ -208,7 +210,6 @@
                 </div>
             `;
 
-            // 渲染 Contact
             document.getElementById('contact').innerHTML = `
                 <h2 class="section-title fade-in">${data.contact.title}</h2>
                 <div class="contact-grid">
@@ -225,15 +226,14 @@
                 </div>
             `;
 
-            // 设置当前年份
             document.getElementById('current-year').innerText = new Date().getFullYear();
 
             // ==========================================
-            // 2. 初始化交互与 GSAP 动画
+            // 动画与交互绑定
             // ==========================================
             gsap.registerPlugin(ScrollTrigger);
 
-            // 文字滚动点亮动画
+            // 文字滚动点亮
             document.querySelectorAll('.scroll-light-up').forEach(el => {
                 const text = el.innerText;
                 el.innerHTML = ''; 
@@ -258,7 +258,7 @@
                 });
             });
 
-            // 常规组件的进入动画
+            // 卡片浮现
             document.querySelectorAll('.fade-in').forEach((el) => {
                 gsap.fromTo(el, { opacity: 0, y: 30 }, { 
                     opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
@@ -266,7 +266,7 @@
                 });
             });
 
-            // 移动端菜单
+            // 移动菜单
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const navLinks = document.getElementById('nav-links');
             mobileMenuBtn.addEventListener('click', () => {
@@ -274,14 +274,14 @@
                 mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
             });
             
-            // 导航栏滚动样式
+            // 顶栏背景
             const header = document.getElementById('main-header');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) header.classList.add('scrolled');
                 else header.classList.remove('scrolled');
             });
             
-            // 作品集过滤
+            // 过滤系统
             const filterButtons = document.querySelectorAll('.filter-btn');
             const photoCards = document.querySelectorAll('.photo-card');
             filterButtons.forEach(button => {
@@ -301,7 +301,7 @@
                 });
             });
             
-            // 复制链接功能
+            // 复制通知
             const copyTriggers = document.querySelectorAll('.copy-trigger');
             const notification = document.getElementById('copy-notification');
             copyTriggers.forEach(trigger => {
