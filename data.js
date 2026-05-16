@@ -34,7 +34,7 @@ window.portfolioData = {
             { id: "all", label: "[ ALL ]", active: true },
             { id: "tech", label: "[ CODE ]", active: false },
             { id: "sightseeing", label: "[ PHOTOS ]", active: false },
-            { id: "other", label: "[ HARDWARE ]", active: false }
+            { id: "other", label: "[ CRAFTS & MOCs ]", active: false }
         ],
         projects: [
             {
