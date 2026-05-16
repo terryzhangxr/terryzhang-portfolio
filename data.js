@@ -1,7 +1,7 @@
 // data.js
 window.portfolioData = {
     hero: {
-        subtitle: "> ./run_profile.sh",
+        subtitle: "> ./run_profile.tz",
         name: "TERRY ZHANG",
         role: "CREATOR / DEV",
         badges: ["SYS: Python", "UI: Web Front-end", "OPTICS: Photography", "HARDWARE: Lego MOC"]
