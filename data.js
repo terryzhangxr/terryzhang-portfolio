@@ -91,7 +91,7 @@ window.portfolioData = {
                 images: []
             },
             {
-                date: "2025.12.05",
+                date: "2025.08.20",
                 content: "美国国铁p42dc内燃机车实体化moc",
                 location: "Shanghai",
                 images: [
