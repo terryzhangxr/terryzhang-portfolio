@@ -10,7 +10,7 @@
     <style>
         :root {
             --bg-base: #050505; --bg-surface: #0a0a0a; --border-color: #333333; --border-highlight: #ffffff;
-            --text-primary: #ffffff; --text-secondary: #444444; --text-dim: #222222; --accent-color: #ff003c;
+            --text-primary: #ffffff; --text-secondary: #999999; --text-dim: #555555; --accent-color: #ff003c;
             --font-pixel: 'VT323', monospace; --font-mono: 'Space Mono', monospace;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; cursor: crosshair; }
@@ -29,13 +29,11 @@
         .nav-links a:hover, .nav-links a.active { color: var(--accent-color); background-color: var(--text-primary); padding: 0 4px; }
         .mobile-menu-btn { display: none; background: none; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 1.2rem; padding: 0.2rem 0.5rem; cursor: pointer; }
         
-        /* 针对独立页面的调整 */
         main { margin-top: 100px; min-height: 80vh; }
         section { padding: 4rem 5% 8rem 5%; position: relative; max-width: 1000px; margin: 0 auto; }
         
         .section-title { font-family: var(--font-pixel); font-size: 3rem; text-transform: uppercase; margin-bottom: 4rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 1rem; display: inline-block; width: 100%; }
         
-        /* 说说时间线 CSS */
         .timeline { border-left: 2px dashed var(--border-color); margin-left: 1rem; padding-left: 2.5rem; display: flex; flex-direction: column; gap: 3rem; }
         .moment-card { position: relative; border: 1px solid var(--border-color); background: var(--bg-base); padding: 2rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
         .moment-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-primary); border-color: var(--text-primary); }
@@ -44,9 +42,17 @@
         
         .moment-date { font-family: var(--font-pixel); color: var(--accent-color); margin-bottom: 1rem; font-size: 1.4rem; }
         .moment-content { color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.8; }
-        .moment-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 250px)); gap: 1rem; margin-top: 1rem; }
-        .moment-img { width: 100%; height: 180px; object-fit: cover; border: 1px solid var(--border-color); filter: brightness(0.85); transition: filter 0.3s; }
-        .moment-card:hover .moment-img { filter: brightness(1); }
+        
+        .moment-images { display: grid; gap: 10px; margin-top: 1rem; width: 100%; max-width: 600px; }
+        .moment-images[data-count="1"] { grid-template-columns: 1fr; max-width: 400px; }
+        .moment-images[data-count="1"] .moment-img { aspect-ratio: auto; max-height: 400px; }
+        .moment-images[data-count="2"], .moment-images[data-count="4"] { grid-template-columns: repeat(2, 1fr); max-width: 400px; }
+        .moment-images:not([data-count="1"]):not([data-count="2"]):not([data-count="4"]) { grid-template-columns: repeat(3, 1fr); }
+        
+        .moment-img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid var(--border-color); filter: brightness(0.85); transition: all 0.3s; position: relative; z-index: 1; }
+        .moment-card:hover .moment-img { filter: brightness(1); border-color: var(--text-primary); }
+        .moment-img:hover { transform: scale(1.05) translate(-4px, -4px); box-shadow: 6px 6px 0px var(--accent-color); z-index: 10; }
+
         .moment-meta { font-family: var(--font-pixel); font-size: 1rem; color: var(--text-secondary); display: flex; gap: 1.5rem; margin-top: 1.5rem; border-top: 1px dashed var(--border-color); padding-top: 1rem; text-transform: uppercase; }
         
         footer { border-top: 1px solid var(--border-color); padding: 2rem 5%; font-family: var(--font-pixel); color: var(--text-secondary); font-size: 1.2rem; display: flex; justify-content: space-between; text-transform: uppercase; }
@@ -109,7 +115,6 @@
                 const data = window.portfolioData;
                 const momentsData = data.moments || { title: "> SYS.LOGS", items: [] };
 
-                // 专门渲染 Moments (说说)
                 document.getElementById('moments').innerHTML = `
                     <h2 class="section-title fade-in">${momentsData.title}</h2>
                     <div class="timeline">
@@ -118,7 +123,7 @@
                                 <div class="moment-date">[ ${m.date} ]</div>
                                 <div class="moment-content">${m.content}</div>
                                 ${m.images && m.images.length > 0 ? `
-                                    <div class="moment-images">
+                                    <div class="moment-images" data-count="${m.images.length}">
                                         ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
                                     </div>
                                 ` : ''}
@@ -133,7 +138,6 @@
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-                // 绑定 GSAP
                 gsap.registerPlugin(ScrollTrigger);
 
                 document.querySelectorAll('.fade-in').forEach((el) => {
@@ -143,7 +147,6 @@
                     });
                 });
 
-                // 交互脚本
                 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                 const navLinks = document.getElementById('nav-links');
                 mobileMenuBtn.addEventListener('click', () => {
