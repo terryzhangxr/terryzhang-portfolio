@@ -47,6 +47,29 @@
         .badge { background-color: var(--bg-base); border: 1px solid var(--text-primary); color: var(--text-primary); font-size: 0.8rem; padding: 0.5rem 1rem; text-transform: uppercase; box-shadow: 4px 4px 0px var(--border-color); transition: all 0.1s; }
         .badge:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--accent-color); background-color: var(--text-primary); color: var(--bg-base); }
         
+        /* 新增：首页直达日志的硬核按钮 */
+        .hero-btn {
+            display: inline-block;
+            font-family: var(--font-pixel);
+            font-size: 1.5rem;
+            color: var(--bg-base);
+            background-color: var(--text-primary);
+            padding: 0.6rem 2rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 2px solid var(--text-primary);
+            box-shadow: 6px 6px 0px var(--accent-color);
+            transition: all 0.1s;
+            margin-top: 3rem;
+            letter-spacing: 1px;
+        }
+        .hero-btn:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0px var(--accent-color);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+        }
+
         .section-title { font-family: var(--font-pixel); font-size: 3rem; text-transform: uppercase; margin-bottom: 4rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 1rem; display: inline-block; width: 100%; }
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
         .about-text p { font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dim); }
@@ -72,6 +95,7 @@
         .photo-img-container { width: 100%; height: 200px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 1rem; background: #111; }
         .photo-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8) contrast(1.1); transition: filter 0.3s; }
         .photo-card:hover .photo-img { filter: brightness(1) contrast(1.05); }
+        
         .photo-title { font-family: var(--font-pixel); font-size: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; }
         .photo-date { font-size: 0.75rem; color: var(--accent-color); margin-bottom: 1rem; }
         .photo-description { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
@@ -153,6 +177,7 @@
                 }
                 const data = window.portfolioData;
 
+                // 重点看这里：在 Hero 区域最后追加了跳转日志的按钮
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                     <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -160,6 +185,7 @@
                     <div class="hero-badges fade-in">
                         ${data.hero.badges.map(b => `<div class="badge">${b}</div>`).join('')}
                     </div>
+                    <a href="logs.html" class="hero-btn fade-in">> ACCESS_SYS.LOGS</a>
                 `;
 
                 document.getElementById('about').innerHTML = `
@@ -239,8 +265,15 @@
                         el.appendChild(span);
                     });
                     gsap.to(el.querySelectorAll('span'), {
-                        scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 60%", scrub: 0.5 },
-                        color: 'var(--text-primary)', textShadow: '0 0 8px rgba(255,255,255,0.8)', stagger: 0.1
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 80%",
+                            end: "bottom 60%",
+                            scrub: 0.5,
+                        },
+                        color: 'var(--text-primary)',
+                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
+                        stagger: 0.1
                     });
                 });
 
