@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerryZhang | SYS.LOGS</title>
+    <link rel="icon" href="https://s2.loli.net/2025/01/21/wmMYhAlqsVDoaPp.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-base: #050505; --bg-surface: #0a0a0a; --border-color: #333333; --border-highlight: #ffffff;
+            --text-primary: #ffffff; --text-secondary: #444444; --text-dim: #222222; --accent-color: #ff003c;
+            --font-pixel: 'VT323', monospace; --font-mono: 'Space Mono', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; cursor: crosshair; }
+        html { scroll-behavior: auto; background-color: var(--bg-base); }
+        body { font-family: var(--font-mono); background-color: var(--bg-base); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: none; }
+        
+        .crt-scanlines { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%), linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06)); background-size: 100% 4px, 3px 100%; z-index: 9999; pointer-events: none; }
+        .noise-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.03; z-index: -1; }
+        
+        header { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background-color: var(--bg-base); border-bottom: 1px solid var(--border-color); transition: all 0.3s; }
+        header.scrolled { padding: 1rem 5%; border-bottom: 2px solid var(--accent-color); }
+        .logo { font-family: var(--font-pixel); font-size: 2rem; color: var(--text-primary); text-decoration: none; letter-spacing: 2px; text-transform: uppercase; }
+        .logo::after { content: '_'; animation: blink 1s step-end infinite; color: var(--accent-color); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-color); background-color: var(--text-primary); padding: 0 4px; }
+        .mobile-menu-btn { display: none; background: none; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 1.2rem; padding: 0.2rem 0.5rem; cursor: pointer; }
+        
+        /* 针对独立页面的调整 */
+        main { margin-top: 100px; min-height: 80vh; }
+        section { padding: 4rem 5% 8rem 5%; position: relative; max-width: 1000px; margin: 0 auto; }
+        
+        .section-title { font-family: var(--font-pixel); font-size: 3rem; text-transform: uppercase; margin-bottom: 4rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 1rem; display: inline-block; width: 100%; }
+        
+        /* 说说时间线 CSS */
+        .timeline { border-left: 2px dashed var(--border-color); margin-left: 1rem; padding-left: 2.5rem; display: flex; flex-direction: column; gap: 3rem; }
+        .moment-card { position: relative; border: 1px solid var(--border-color); background: var(--bg-base); padding: 2rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
+        .moment-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-primary); border-color: var(--text-primary); }
+        .moment-card::before { content: ''; position: absolute; left: -3rem; top: 2rem; width: 12px; height: 12px; background: var(--bg-base); border: 2px solid var(--accent-color); z-index: 2; transition: all 0.2s; }
+        .moment-card:hover::before { background: var(--accent-color); }
+        
+        .moment-date { font-family: var(--font-pixel); color: var(--accent-color); margin-bottom: 1rem; font-size: 1.4rem; }
+        .moment-content { color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.05rem; line-height: 1.8; }
+        .moment-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 250px)); gap: 1rem; margin-top: 1rem; }
+        .moment-img { width: 100%; height: 180px; object-fit: cover; border: 1px solid var(--border-color); filter: brightness(0.85); transition: filter 0.3s; }
+        .moment-card:hover .moment-img { filter: brightness(1); }
+        .moment-meta { font-family: var(--font-pixel); font-size: 1rem; color: var(--text-secondary); display: flex; gap: 1.5rem; margin-top: 1.5rem; border-top: 1px dashed var(--border-color); padding-top: 1rem; text-transform: uppercase; }
+        
+        footer { border-top: 1px solid var(--border-color); padding: 2rem 5%; font-family: var(--font-pixel); color: var(--text-secondary); font-size: 1.2rem; display: flex; justify-content: space-between; text-transform: uppercase; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--bg-base); border-bottom: 1px solid var(--border-color); flex-direction: column; padding: 2rem; gap: 1.5rem; }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .timeline { margin-left: 0; padding-left: 1.5rem; }
+            .moment-card::before { left: -1.95rem; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+        .fade-in { opacity: 0; }
+
+        #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #00ff00; font-family: var(--font-pixel); padding: 2rem; z-index: 99999; overflow: auto; }
+        #error-overlay h1 { color: red; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="crt-scanlines"></div>
+    <div class="noise-bg"></div>
+    
+    <div id="error-overlay">
+        <h1>[ SYSTEM KERNEL PANIC ]</h1>
+        <p>初始化日志数据失败。请检查 data.js 状态。</p>
+        <pre id="error-log" style="white-space: pre-wrap; margin-top: 1rem; color: #ff5555;"></pre>
+    </div>
+
+    <header id="main-header">
+        <a href="index.html" class="logo">TR_ZHANG</a>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">[ MENU ]</button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html#home">01_INIT</a></li>
+            <li><a href="index.html#about">02_SYS.INFO</a></li>
+            <li><a href="index.html#portfolio">03_ARCHIVE</a></li>
+            <li><a href="#" class="active">04_LOGS</a></li>
+            <li><a href="index.html#contact">05_PING</a></li>
+        </ul>
+    </header>
+    
+    <main>
+        <section id="moments"></section>
+    </main>
+    
+    <footer>
+        <div>© <span id="current-year"></span> TERRY ZHANG.</div>
+        <div>SYS_STATUS: ONLINE.</div>
+    </footer>
+    
+    <script src="data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (typeof window.portfolioData === 'undefined') {
+                    throw new Error("找不到 window.portfolioData。");
+                }
+                const data = window.portfolioData;
+                const momentsData = data.moments || { title: "> SYS.LOGS", items: [] };
+
+                // 专门渲染 Moments (说说)
+                document.getElementById('moments').innerHTML = `
+                    <h2 class="section-title fade-in">${momentsData.title}</h2>
+                    <div class="timeline">
+                        ${momentsData.items.map(m => `
+                            <div class="moment-card fade-in">
+                                <div class="moment-date">[ ${m.date} ]</div>
+                                <div class="moment-content">${m.content}</div>
+                                ${m.images && m.images.length > 0 ? `
+                                    <div class="moment-images">
+                                        ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
+                                    </div>
+                                ` : ''}
+                                <div class="moment-meta">
+                                    ${m.location ? `<span><i class="fas fa-map-marker-alt"></i> LOC: ${m.location}</span>` : ''}
+                                    <span><i class="fas fa-satellite-dish"></i> BROADCAST_END</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                document.getElementById('current-year').innerText = new Date().getFullYear();
+
+                // 绑定 GSAP
+                gsap.registerPlugin(ScrollTrigger);
+
+                document.querySelectorAll('.fade-in').forEach((el) => {
+                    gsap.fromTo(el, { opacity: 0, y: 30 }, { 
+                        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" }
+                    });
+                });
+
+                // 交互脚本
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const navLinks = document.getElementById('nav-links');
+                mobileMenuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
+                });
+                
+                const header = document.getElementById('main-header');
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) header.classList.add('scrolled');
+                    else header.classList.remove('scrolled');
+                });
+
+            } catch (err) {
+                const overlay = document.getElementById('error-overlay');
+                const log = document.getElementById('error-log');
+                overlay.style.display = 'block';
+                log.textContent = err.toString() + '\n' + err.stack;
+            }
+        });
+    </script>
+</body>
+</html>
