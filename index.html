@@ -9,16 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-base: #050505;
-            --bg-surface: #0a0a0a;
-            --border-color: #333333;
-            --border-highlight: #ffffff;
-            --text-primary: #ffffff;
-            --text-secondary: #444444;
-            --text-dim: #222222;
-            --accent-color: #ff003c;
-            --font-pixel: 'VT323', monospace;
-            --font-mono: 'Space Mono', monospace;
+            --bg-base: #050505; --bg-surface: #0a0a0a; --border-color: #333333; --border-highlight: #ffffff;
+            --text-primary: #ffffff; --text-secondary: #444444; --text-dim: #222222; --accent-color: #ff003c;
+            --font-pixel: 'VT323', monospace; --font-mono: 'Space Mono', monospace;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; cursor: crosshair; }
         html { scroll-behavior: auto; background-color: var(--bg-base); }
@@ -69,7 +62,6 @@
         .tech-item i { color: var(--text-secondary); width: 20px; }
         .tech-item span { font-size: 0.9rem; }
         
-        /* 作品集部分调整 */
         .portfolio-filter { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
         .filter-btn { background: none; border: 1px solid var(--border-color); color: var(--text-secondary); font-family: var(--font-pixel); font-size: 1.2rem; padding: 0.5rem 1.5rem; text-transform: uppercase; cursor: pointer; }
         .filter-btn.active, .filter-btn:hover { border-color: var(--text-primary); color: var(--bg-base); background-color: var(--text-primary); }
@@ -78,8 +70,6 @@
         .photo-card { border: 1px solid var(--border-color); background-color: var(--bg-base); padding: 1rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
         .photo-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--accent-color); border-color: var(--text-primary); }
         .photo-img-container { width: 100%; height: 200px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 1rem; background: #111; }
-        
-        /* 修改：移除强制黑白滤镜，改为降低亮度和增加对比度，保留色彩 */
         .photo-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8) contrast(1.1); transition: filter 0.3s; }
         .photo-card:hover .photo-img { filter: brightness(1) contrast(1.05); }
         
@@ -88,12 +78,9 @@
         .photo-description { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
         .photo-link { color: var(--bg-base); background-color: var(--text-primary); padding: 0.3rem 0.8rem; font-size: 0.8rem; text-transform: uppercase; text-decoration: none; display: inline-block; font-weight: bold; }
         
-        /* 新增：说说/日志时间线 */
         .timeline { border-left: 2px dashed var(--border-color); margin-left: 1rem; padding-left: 2rem; display: flex; flex-direction: column; gap: 3rem; max-width: 800px; }
         .moment-card { position: relative; border: 1px solid var(--border-color); background: var(--bg-base); padding: 1.5rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
         .moment-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-primary); border-color: var(--text-primary); }
-        
-        /* 时间线节点 */
         .moment-card::before { content: ''; position: absolute; left: -2.45rem; top: 1.5rem; width: 12px; height: 12px; background: var(--bg-base); border: 2px solid var(--accent-color); z-index: 2; transition: all 0.2s; }
         .moment-card:hover::before { background: var(--accent-color); }
         
@@ -129,12 +116,28 @@
             footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
         .fade-in { opacity: 0; }
+        
+        /* 报错信息面板样式 */
+        #error-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #00ff00; font-family: var(--font-pixel); padding: 2rem; z-index: 99999; overflow: auto; }
+        #error-overlay h1 { color: red; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
     <div class="crt-scanlines"></div>
     <div class="noise-bg"></div>
     
+    <div id="error-overlay">
+        <h1>[ SYSTEM KERNEL PANIC ]</h1>
+        <p>初始化数据失败。可能的原因：</p>
+        <p>1. 浏览器缓存了旧版本的 data.js (请尝试 Ctrl+F5 强制刷新)。</p>
+        <p>2. data.js 文件和 index.html 不在同一个文件夹内。</p>
+        <p>3. data.js 内部存在语法错误。</p>
+        <div style="margin-top: 2rem; border-top: 1px dashed #0f0; padding-top: 1rem;">
+            <strong>错误日志 (Log):</strong>
+            <pre id="error-log" style="white-space: pre-wrap; margin-top: 1rem; color: #ff5555;"></pre>
+        </div>
+    </div>
+
     <header id="main-header">
         <a href="#" class="logo">TR_ZHANG</a>
         <button class="mobile-menu-btn" id="mobile-menu-btn">[ MENU ]</button>
@@ -168,179 +171,203 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (!window.portfolioData) {
-                document.body.innerHTML = '<h1 style="color:red; text-align:center; padding: 50px;">错误：未能读取到数据。请确保 data.js 文件与 index.html 在同一文件夹内。</h1>';
-                return;
-            }
+            try {
+                // 安全检查
+                if (typeof window.portfolioData === 'undefined') {
+                    throw new Error("找不到 window.portfolioData，文件未加载或命名错误。");
+                }
+                const data = window.portfolioData;
 
-            const data = window.portfolioData;
-            
-            // 渲染 Hero
-            document.getElementById('home').innerHTML = `
-                <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
-                <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
-                <h1 class="fade-in glitch-hover" data-text="${data.hero.role}" style="color: var(--text-secondary);">${data.hero.role}</h1>
-                <div class="hero-badges fade-in">
-                    ${data.hero.badges.map(b => `<div class="badge">${b}</div>`).join('')}
-                </div>
-            `;
+                // 容错读取：如果没有 moments 数据，给个默认空数组防崩溃
+                const momentsData = data.moments || { title: "> SYS.LOGS", items: [] };
 
-            // 渲染 About
-            document.getElementById('about').innerHTML = `
-                <h2 class="section-title fade-in">${data.about.title}</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        ${data.about.paragraphs.map(p => `<p class="scroll-light-up">${p}</p>`).join('')}
-                        <div class="about-stats fade-in">
-                            ${data.about.stats.map(s => `
-                                <div class="stat-item">
-                                    <span class="stat-number">${s.number}</span>
-                                    <span class="stat-label">${s.label}</span>
-                                </div>
-                            `).join('')}
+                // 1. 渲染 Hero
+                document.getElementById('home').innerHTML = `
+                    <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
+                    <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
+                    <h1 class="fade-in glitch-hover" data-text="${data.hero.role}" style="color: var(--text-secondary);">${data.hero.role}</h1>
+                    <div class="hero-badges fade-in">
+                        ${data.hero.badges.map(b => `<div class="badge">${b}</div>`).join('')}
+                    </div>
+                `;
+
+                // 2. 渲染 About
+                document.getElementById('about').innerHTML = `
+                    <h2 class="section-title fade-in">${data.about.title}</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            ${data.about.paragraphs.map(p => `<p class="scroll-light-up">${p}</p>`).join('')}
+                            <div class="about-stats fade-in">
+                                ${data.about.stats.map(s => `
+                                    <div class="stat-item">
+                                        <span class="stat-number">${s.number}</span>
+                                        <span class="stat-label">${s.label}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="about-visual fade-in">
+                            <div class="tech-stack">
+                                <div class="tech-stack-header">${data.about.techStackTitle}</div>
+                                ${data.about.techStack.map(t => `
+                                    <div class="tech-item"><i class="${t.icon}"></i><span>${t.text}</span></div>
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
-                    <div class="about-visual fade-in">
-                        <div class="tech-stack">
-                            <div class="tech-stack-header">${data.about.techStackTitle}</div>
-                            ${data.about.techStack.map(t => `
-                                <div class="tech-item"><i class="${t.icon}"></i><span>${t.text}</span></div>
-                            `).join('')}
-                        </div>
+                `;
+
+                // 3. 渲染 Portfolio
+                document.getElementById('portfolio').innerHTML = `
+                    <h2 class="section-title fade-in">${data.portfolio.title}</h2>
+                    <div class="portfolio-filter fade-in">
+                        ${data.portfolio.filters.map(f => `<button class="filter-btn ${f.active ? 'active' : ''}" data-filter="${f.id}">${f.label}</button>`).join('')}
                     </div>
-                </div>
-            `;
-
-            // 渲染 Portfolio
-            document.getElementById('portfolio').innerHTML = `
-                <h2 class="section-title fade-in">${data.portfolio.title}</h2>
-                <div class="portfolio-filter fade-in">
-                    ${data.portfolio.filters.map(f => `<button class="filter-btn ${f.active ? 'active' : ''}" data-filter="${f.id}">${f.label}</button>`).join('')}
-                </div>
-                <div class="gallery" id="gallery-container">
-                    ${data.portfolio.projects.map(p => `
-                        <div class="photo-card fade-in" data-category="${p.category}">
-                            <div class="photo-img-container">
-                                <img src="${p.img}" alt="${p.title}" class="photo-img" loading="lazy">
-                            </div>
-                            <h3 class="photo-title">${p.title}</h3>
-                            <div class="photo-date">${p.date}</div>
-                            <p class="photo-description">${p.desc}</p>
-                            ${p.link ? `<a href="${p.link}" target="_blank" class="photo-link">${p.linkText}</a>` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-
-            // 渲染 Moments (说说)
-            document.getElementById('moments').innerHTML = `
-                <h2 class="section-title fade-in">${data.moments.title}</h2>
-                <div class="timeline">
-                    ${data.moments.items.map(m => `
-                        <div class="moment-card fade-in">
-                            <div class="moment-date">[ ${m.date} ]</div>
-                            <div class="moment-content">${m.content}</div>
-                            ${m.images && m.images.length > 0 ? `
-                                <div class="moment-images">
-                                    ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
+                    <div class="gallery" id="gallery-container">
+                        ${data.portfolio.projects.map(p => `
+                            <div class="photo-card fade-in" data-category="${p.category}">
+                                <div class="photo-img-container">
+                                    <img src="${p.img}" alt="${p.title}" class="photo-img" loading="lazy">
                                 </div>
-                            ` : ''}
-                            <div class="moment-meta">
-                                ${m.location ? `<span><i class="fas fa-map-marker-alt"></i> LOC: ${m.location}</span>` : ''}
-                                <span><i class="fas fa-satellite-dish"></i> BROADCAST_END</span>
+                                <h3 class="photo-title">${p.title}</h3>
+                                <div class="photo-date">${p.date}</div>
+                                <p class="photo-description">${p.desc}</p>
+                                ${p.link ? `<a href="${p.link}" target="_blank" class="photo-link">${p.linkText}</a>` : ''}
                             </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+                        `).join('')}
+                    </div>
+                `;
 
-            // 渲染 Contact
-            document.getElementById('contact').innerHTML = `
-                <h2 class="section-title fade-in">${data.contact.title}</h2>
-                <div class="contact-grid">
-                    ${data.contact.items.map(c => `
-                        <a href="${c.link}" ${!c.isCopy ? 'target="_blank"' : ''} class="contact-card fade-in ${c.isCopy ? 'copy-trigger' : ''}" ${c.isCopy ? `data-copy="${c.copyData}"` : ''}>
-                            <div class="contact-icon"><i class="${c.icon}"></i></div>
-                            <div class="contact-text">
-                                <h3>${c.title}</h3>
-                                <p>${c.desc}</p>
-                                <p style="color: var(--accent-color); margin-top: 5px;">${c.actionText}</p>
+                // 4. 渲染 Moments (说说)
+                document.getElementById('moments').innerHTML = `
+                    <h2 class="section-title fade-in">${momentsData.title}</h2>
+                    <div class="timeline">
+                        ${momentsData.items.map(m => `
+                            <div class="moment-card fade-in">
+                                <div class="moment-date">[ ${m.date} ]</div>
+                                <div class="moment-content">${m.content}</div>
+                                ${m.images && m.images.length > 0 ? `
+                                    <div class="moment-images">
+                                        ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
+                                    </div>
+                                ` : ''}
+                                <div class="moment-meta">
+                                    ${m.location ? `<span><i class="fas fa-map-marker-alt"></i> LOC: ${m.location}</span>` : ''}
+                                    <span><i class="fas fa-satellite-dish"></i> BROADCAST_END</span>
+                                </div>
                             </div>
-                        </a>
-                    `).join('')}
-                </div>
-            `;
+                        `).join('')}
+                    </div>
+                `;
 
-            document.getElementById('current-year').innerText = new Date().getFullYear();
+                // 5. 渲染 Contact
+                document.getElementById('contact').innerHTML = `
+                    <h2 class="section-title fade-in">${data.contact.title}</h2>
+                    <div class="contact-grid">
+                        ${data.contact.items.map(c => `
+                            <a href="${c.link}" ${!c.isCopy ? 'target="_blank"' : ''} class="contact-card fade-in ${c.isCopy ? 'copy-trigger' : ''}" ${c.isCopy ? `data-copy="${c.copyData}"` : ''}>
+                                <div class="contact-icon"><i class="${c.icon}"></i></div>
+                                <div class="contact-text">
+                                    <h3>${c.title}</h3>
+                                    <p>${c.desc}</p>
+                                    <p style="color: var(--accent-color); margin-top: 5px;">${c.actionText}</p>
+                                </div>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
 
-            // ==========================================
-            // 动画与交互绑定
-            // ==========================================
-            gsap.registerPlugin(ScrollTrigger);
+                document.getElementById('current-year').innerText = new Date().getFullYear();
 
-            document.querySelectorAll('.scroll-light-up').forEach(el => {
-                const text = el.innerText;
-                el.innerHTML = ''; 
-                const chars = text.split(''); 
-                chars.forEach(char => {
-                    const span = document.createElement('span');
-                    span.innerText = char;
-                    span.style.color = 'var(--text-dim)'; 
-                    span.style.transition = 'text-shadow 0.1s';
-                    el.appendChild(span);
-                });
-                gsap.to(el.querySelectorAll('span'), {
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 80%",
-                        end: "bottom 60%",
-                        scrub: 0.5,
-                    },
-                    color: 'var(--text-primary)',
-                    textShadow: '0 0 8px rgba(255,255,255,0.8)',
-                    stagger: 0.1
-                });
-            });
+                // ==========================================
+                // 动画与交互绑定
+                // ==========================================
+                gsap.registerPlugin(ScrollTrigger);
 
-            document.querySelectorAll('.fade-in').forEach((el) => {
-                gsap.fromTo(el, { opacity: 0, y: 30 }, { 
-                    opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
-                    scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" }
-                });
-            });
-
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const navLinks = document.getElementById('nav-links');
-            mobileMenuBtn.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
-            });
-            
-            const header = document.getElementById('main-header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 20) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
-            
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const photoCards = document.querySelectorAll('.photo-card');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    const filterValue = button.getAttribute('data-filter');
-                    
-                    photoCards.forEach(card => {
-                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                            card.style.display = 'block';
-                            gsap.fromTo(card, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.3});
-                        } else {
-                            card.style.display = 'none';
-                        }
+                document.querySelectorAll('.scroll-light-up').forEach(el => {
+                    const text = el.innerText;
+                    el.innerHTML = ''; 
+                    const chars = text.split(''); 
+                    chars.forEach(char => {
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        span.style.color = 'var(--text-dim)'; 
+                        span.style.transition = 'text-shadow 0.1s';
+                        el.appendChild(span);
+                    });
+                    gsap.to(el.querySelectorAll('span'), {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 80%",
+                            end: "bottom 60%",
+                            scrub: 0.5,
+                        },
+                        color: 'var(--text-primary)',
+                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
+                        stagger: 0.1
                     });
                 });
-            });
-            
-            const copyTriggers = document.querySelectorAll('.copy-trigger');
-            const notification = document.getElementById('copy-notification');
-            copy
+
+                document.querySelectorAll('.fade-in').forEach((el) => {
+                    gsap.fromTo(el, { opacity: 0, y: 30 }, { 
+                        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" }
+                    });
+                });
+
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const navLinks = document.getElementById('nav-links');
+                mobileMenuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
+                });
+                
+                const header = document.getElementById('main-header');
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 20) header.classList.add('scrolled');
+                    else header.classList.remove('scrolled');
+                });
+                
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const photoCards = document.querySelectorAll('.photo-card');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        const filterValue = button.getAttribute('data-filter');
+                        
+                        photoCards.forEach(card => {
+                            if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                                card.style.display = 'block';
+                                gsap.fromTo(card, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.3});
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+                
+                const copyTriggers = document.querySelectorAll('.copy-trigger');
+                const notification = document.getElementById('copy-notification');
+                copyTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const text = trigger.getAttribute('data-copy');
+                        navigator.clipboard.writeText(text).then(() => {
+                            notification.classList.add('show');
+                            setTimeout(() => notification.classList.remove('show'), 2000);
+                        });
+                    });
+                });
+
+            } catch (err) {
+                // 如果发生任何 JS 错误，直接在页面上打印出大红字
+                const overlay = document.getElementById('error-overlay');
+                const log = document.getElementById('error-log');
+                overlay.style.display = 'block';
+                log.textContent = err.toString() + '\n' + err.stack;
+            }
+        });
+    </script>
+</body>
+</html>
