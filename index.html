@@ -36,11 +36,34 @@
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
-        /* 故障效果修改：加上了 .glitch-active 用于 JS 强制触发 */
+        /* 💡 核心修改区：故障特效改为控制 opacity 平滑过渡 */
         .glitch-hover { position: relative; display: inline-block; }
-        .glitch-hover:hover::before, .glitch-active::before { content: attr(data-text); position: absolute; left: -2px; text-shadow: 2px 0 blue; top: 0; color: white; background: black; overflow: hidden; animation: noise-anim 2s infinite linear alternate-reverse; z-index: 2; }
-        .glitch-hover:hover::after, .glitch-active::after { content: attr(data-text); position: absolute; left: 2px; text-shadow: -2px 0 var(--accent-color); top: 0; color: white; background: black; overflow: hidden; animation: noise-anim-2 3s infinite linear alternate-reverse; z-index: 2; }
         
+        .glitch-hover::before, .glitch-hover::after {
+            content: attr(data-text);
+            position: absolute; top: 0; color: white; background: var(--bg-base);
+            overflow: hidden; z-index: 2; pointer-events: none;
+            opacity: 0; /* 默认透明 */
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* 移开时/定时器结束时，0.6秒平滑消散 */
+        }
+        
+        .glitch-hover::before {
+            left: -2px; text-shadow: 2px 0 blue;
+            animation: noise-anim 2s infinite linear alternate-reverse;
+        }
+        .glitch-hover::after {
+            left: 2px; text-shadow: -2px 0 var(--accent-color);
+            animation: noise-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        /* 激活时，透明度瞬间变为 1 */
+        .glitch-hover:hover::before, .glitch-active::before,
+        .glitch-hover:hover::after, .glitch-active::after {
+            opacity: 1;
+            transition: opacity 0.05s ease-in; /* 瞬间显现 */
+        }
+        /* ------------------------------------------- */
+
         @keyframes noise-anim { 0% { clip-path: inset(40% 0 61% 0); } 20% { clip-path: inset(92% 0 1% 0); } 40% { clip-path: inset(43% 0 1% 0); } 60% { clip-path: inset(25% 0 58% 0); } 80% { clip-path: inset(54% 0 7% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
         @keyframes noise-anim-2 { 0% { clip-path: inset(15% 0 81% 0); } 20% { clip-path: inset(8% 0 82% 0); } 40% { clip-path: inset(73% 0 13% 0); } 60% { clip-path: inset(4% 0 6% 0); } 80% { clip-path: inset(84% 0 1% 0); } 100% { clip-path: inset(21% 0 63% 0); } }
         @keyframes blink { 50% { opacity: 0; } }
@@ -159,7 +182,6 @@
                 }
                 const data = window.portfolioData;
 
-                // 我们给主标题 TERRY ZHANG 添加了两个 id (main-title) 和控制强制闪烁的类 (glitch-active)
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                     <h1 id="main-title" class="fade-in glitch-hover glitch-active" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -233,8 +255,7 @@
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-                // 核心逻辑：设置定时器，在1.2秒后移除初始强制闪烁效果
-                // 1200ms 让它与 0.8s 的 fade-in 动画略微重叠，效果最好
+                // 定时器在 1.2 秒后移除闪烁激活状态，因为有 CSS 的 transition，消散会很平滑
                 setTimeout(() => {
                     const mainTitle = document.getElementById('main-title');
                     if(mainTitle) {
@@ -256,15 +277,8 @@
                         el.appendChild(span);
                     });
                     gsap.to(el.querySelectorAll('span'), {
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 80%",
-                            end: "bottom 60%",
-                            scrub: 0.5,
-                        },
-                        color: 'var(--text-primary)',
-                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
-                        stagger: 0.1
+                        scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 60%", scrub: 0.5 },
+                        color: 'var(--text-primary)', textShadow: '0 0 8px rgba(255,255,255,0.8)', stagger: 0.1
                     });
                 });
 
