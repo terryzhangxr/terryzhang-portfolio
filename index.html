@@ -36,36 +36,55 @@
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
-        /* 💡 核心修改区：故障特效改为控制 opacity 平滑过渡 */
+        /* =========================================
+           故障特效重构：分为 Hover无限循环 和 Load单次归位
+           ========================================= */
         .glitch-hover { position: relative; display: inline-block; }
         
         .glitch-hover::before, .glitch-hover::after {
             content: attr(data-text);
-            position: absolute; top: 0; color: white; background: var(--bg-base);
+            position: absolute; top: 0; left: 0; color: white; background: var(--bg-base);
             overflow: hidden; z-index: 2; pointer-events: none;
-            opacity: 0; /* 默认透明 */
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* 移开时/定时器结束时，0.6秒平滑消散 */
+            opacity: 0; /* 默认隐藏 */
         }
         
-        .glitch-hover::before {
-            left: -2px; text-shadow: 2px 0 blue;
+        /* 1. 悬停时的无限循环动画 (随时可触发) */
+        .glitch-hover:hover::before {
+            opacity: 1; left: -2px; text-shadow: 2px 0 blue;
             animation: noise-anim 2s infinite linear alternate-reverse;
         }
-        .glitch-hover::after {
-            left: 2px; text-shadow: -2px 0 var(--accent-color);
+        .glitch-hover:hover::after {
+            opacity: 1; left: 2px; text-shadow: -2px 0 var(--accent-color);
             animation: noise-anim-2 3s infinite linear alternate-reverse;
         }
 
-        /* 激活时，透明度瞬间变为 1 */
-        .glitch-hover:hover::before, .glitch-active::before,
-        .glitch-hover:hover::after, .glitch-active::after {
-            opacity: 1;
-            transition: opacity 0.05s ease-in; /* 瞬间显现 */
-        }
-        /* ------------------------------------------- */
+        /* 2. 初始加载时的单次平滑归位动画 */
+        .glitch-load::before { animation: glitch-intro-1 1.2s 1 forwards linear; }
+        .glitch-load::after { animation: glitch-intro-2 1.2s 1 forwards linear; }
 
         @keyframes noise-anim { 0% { clip-path: inset(40% 0 61% 0); } 20% { clip-path: inset(92% 0 1% 0); } 40% { clip-path: inset(43% 0 1% 0); } 60% { clip-path: inset(25% 0 58% 0); } 80% { clip-path: inset(54% 0 7% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
         @keyframes noise-anim-2 { 0% { clip-path: inset(15% 0 81% 0); } 20% { clip-path: inset(8% 0 82% 0); } 40% { clip-path: inset(73% 0 13% 0); } 60% { clip-path: inset(4% 0 6% 0); } 80% { clip-path: inset(84% 0 1% 0); } 100% { clip-path: inset(21% 0 63% 0); } }
+        
+        /* 专为开局定制的关键帧：动画末尾完美重合到本体上，消除突兀感 */
+        @keyframes glitch-intro-1 {
+            0% { opacity: 1; clip-path: inset(40% 0 61% 0); left: -2px; text-shadow: 2px 0 blue; }
+            20% { opacity: 1; clip-path: inset(92% 0 1% 0); left: -2px; }
+            40% { opacity: 1; clip-path: inset(43% 0 1% 0); left: 2px; }
+            60% { opacity: 1; clip-path: inset(25% 0 58% 0); left: -2px; }
+            80% { opacity: 1; clip-path: inset(54% 0 7% 0); left: -2px; text-shadow: 2px 0 blue; }
+            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 瞬间拼合 */
+            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 隐去 */
+        }
+        @keyframes glitch-intro-2 {
+            0% { opacity: 1; clip-path: inset(15% 0 81% 0); left: 2px; text-shadow: -2px 0 var(--accent-color); }
+            20% { opacity: 1; clip-path: inset(8% 0 82% 0); left: -2px; }
+            40% { opacity: 1; clip-path: inset(73% 0 13% 0); left: 2px; }
+            60% { opacity: 1; clip-path: inset(4% 0 6% 0); left: 2px; }
+            80% { opacity: 1; clip-path: inset(84% 0 1% 0); left: 2px; text-shadow: -2px 0 var(--accent-color); }
+            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 瞬间拼合 */
+            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 隐去 */
+        }
+        
         @keyframes blink { 50% { opacity: 0; } }
         
         .hero-badges { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
@@ -182,9 +201,10 @@
                 }
                 const data = window.portfolioData;
 
+                // 我们将类名改为了 glitch-load
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
-                    <h1 id="main-title" class="fade-in glitch-hover glitch-active" data-text="${data.hero.name}">${data.hero.name}</h1>
+                    <h1 id="main-title" class="fade-in glitch-hover glitch-load" data-text="${data.hero.name}">${data.hero.name}</h1>
                     <h1 class="fade-in glitch-hover" data-text="${data.hero.role}" style="color: var(--text-secondary);">${data.hero.role}</h1>
                     <div class="hero-badges fade-in">
                         ${data.hero.badges.map(b => `<div class="badge">${b}</div>`).join('')}
@@ -255,13 +275,13 @@
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-                // 定时器在 1.2 秒后移除闪烁激活状态，因为有 CSS 的 transition，消散会很平滑
+                // 在动画彻底播完（1200ms）后清理掉 load 类，防止和未来的 hover 动画冲突
                 setTimeout(() => {
                     const mainTitle = document.getElementById('main-title');
                     if(mainTitle) {
-                        mainTitle.classList.remove('glitch-active');
+                        mainTitle.classList.remove('glitch-load');
                     }
-                }, 1200);
+                }, 1300);
 
                 gsap.registerPlugin(ScrollTrigger);
 
@@ -277,8 +297,15 @@
                         el.appendChild(span);
                     });
                     gsap.to(el.querySelectorAll('span'), {
-                        scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 60%", scrub: 0.5 },
-                        color: 'var(--text-primary)', textShadow: '0 0 8px rgba(255,255,255,0.8)', stagger: 0.1
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 80%",
+                            end: "bottom 60%",
+                            scrub: 0.5,
+                        },
+                        color: 'var(--text-primary)',
+                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
+                        stagger: 0.1
                     });
                 });
 
