@@ -36,19 +36,16 @@
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
-        /* =========================================
-           故障特效重构：分为 Hover无限循环 和 Load单次归位
-           ========================================= */
+        /* 故障特效 */
         .glitch-hover { position: relative; display: inline-block; }
         
         .glitch-hover::before, .glitch-hover::after {
             content: attr(data-text);
             position: absolute; top: 0; left: 0; color: white; background: var(--bg-base);
             overflow: hidden; z-index: 2; pointer-events: none;
-            opacity: 0; /* 默认隐藏 */
+            opacity: 0; 
         }
         
-        /* 1. 悬停时的无限循环动画 (随时可触发) */
         .glitch-hover:hover::before {
             opacity: 1; left: -2px; text-shadow: 2px 0 blue;
             animation: noise-anim 2s infinite linear alternate-reverse;
@@ -58,22 +55,21 @@
             animation: noise-anim-2 3s infinite linear alternate-reverse;
         }
 
-        /* 2. 初始加载时的单次平滑归位动画 */
-        .glitch-load::before { animation: glitch-intro-1 1.2s 1 forwards linear; }
-        .glitch-load::after { animation: glitch-intro-2 1.2s 1 forwards linear; }
+        /* 💡 核心修改区：开局归位动画时长延长到 2.5s，并且使用 ease-out 让结尾慢下来 */
+        .glitch-load::before { animation: glitch-intro-1 2.5s 1 forwards ease-out; }
+        .glitch-load::after { animation: glitch-intro-2 2.5s 1 forwards ease-out; }
 
         @keyframes noise-anim { 0% { clip-path: inset(40% 0 61% 0); } 20% { clip-path: inset(92% 0 1% 0); } 40% { clip-path: inset(43% 0 1% 0); } 60% { clip-path: inset(25% 0 58% 0); } 80% { clip-path: inset(54% 0 7% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
         @keyframes noise-anim-2 { 0% { clip-path: inset(15% 0 81% 0); } 20% { clip-path: inset(8% 0 82% 0); } 40% { clip-path: inset(73% 0 13% 0); } 60% { clip-path: inset(4% 0 6% 0); } 80% { clip-path: inset(84% 0 1% 0); } 100% { clip-path: inset(21% 0 63% 0); } }
         
-        /* 专为开局定制的关键帧：动画末尾完美重合到本体上，消除突兀感 */
         @keyframes glitch-intro-1 {
             0% { opacity: 1; clip-path: inset(40% 0 61% 0); left: -2px; text-shadow: 2px 0 blue; }
             20% { opacity: 1; clip-path: inset(92% 0 1% 0); left: -2px; }
             40% { opacity: 1; clip-path: inset(43% 0 1% 0); left: 2px; }
             60% { opacity: 1; clip-path: inset(25% 0 58% 0); left: -2px; }
             80% { opacity: 1; clip-path: inset(54% 0 7% 0); left: -2px; text-shadow: 2px 0 blue; }
-            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 瞬间拼合 */
-            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 隐去 */
+            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } 
+            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; }
         }
         @keyframes glitch-intro-2 {
             0% { opacity: 1; clip-path: inset(15% 0 81% 0); left: 2px; text-shadow: -2px 0 var(--accent-color); }
@@ -81,8 +77,8 @@
             40% { opacity: 1; clip-path: inset(73% 0 13% 0); left: 2px; }
             60% { opacity: 1; clip-path: inset(4% 0 6% 0); left: 2px; }
             80% { opacity: 1; clip-path: inset(84% 0 1% 0); left: 2px; text-shadow: -2px 0 var(--accent-color); }
-            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 瞬间拼合 */
-            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } /* 隐去 */
+            90% { opacity: 1; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; } 
+            100% { opacity: 0; clip-path: inset(0 0 0 0); left: 0px; text-shadow: none; }
         }
         
         @keyframes blink { 50% { opacity: 0; } }
@@ -201,7 +197,6 @@
                 }
                 const data = window.portfolioData;
 
-                // 我们将类名改为了 glitch-load
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                     <h1 id="main-title" class="fade-in glitch-hover glitch-load" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -275,13 +270,13 @@
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-                // 在动画彻底播完（1200ms）后清理掉 load 类，防止和未来的 hover 动画冲突
+                // 💡 配合 CSS，2600ms 后才剥离类名，让 2.5s 的动画完全播完再解除绑定
                 setTimeout(() => {
                     const mainTitle = document.getElementById('main-title');
                     if(mainTitle) {
                         mainTitle.classList.remove('glitch-load');
                     }
-                }, 1300);
+                }, 2600);
 
                 gsap.registerPlugin(ScrollTrigger);
 
@@ -297,15 +292,8 @@
                         el.appendChild(span);
                     });
                     gsap.to(el.querySelectorAll('span'), {
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 80%",
-                            end: "bottom 60%",
-                            scrub: 0.5,
-                        },
-                        color: 'var(--text-primary)',
-                        textShadow: '0 0 8px rgba(255,255,255,0.8)',
-                        stagger: 0.1
+                        scrollTrigger: { trigger: el, start: "top 80%", end: "bottom 60%", scrub: 0.5 },
+                        color: 'var(--text-primary)', textShadow: '0 0 8px rgba(255,255,255,0.8)', stagger: 0.1
                     });
                 });
 
