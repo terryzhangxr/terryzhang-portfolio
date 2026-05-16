@@ -37,9 +37,9 @@
         .mobile-menu-btn { display: none; background: none; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 1.2rem; padding: 0.2rem 0.5rem; cursor: pointer; }
         
         main { margin-top: 80px; }
-        section { padding: 6rem 5%; position: relative; }
+        section { padding: 6rem 5%; position: relative; max-width: 1200px; margin: 0 auto; }
         
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 85vh; max-width: 1000px; margin: 0 auto; }
+        .hero { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 85vh; }
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
@@ -69,6 +69,7 @@
         .tech-item i { color: var(--text-secondary); width: 20px; }
         .tech-item span { font-size: 0.9rem; }
         
+        /* 作品集部分调整 */
         .portfolio-filter { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
         .filter-btn { background: none; border: 1px solid var(--border-color); color: var(--text-secondary); font-family: var(--font-pixel); font-size: 1.2rem; padding: 0.5rem 1.5rem; text-transform: uppercase; cursor: pointer; }
         .filter-btn.active, .filter-btn:hover { border-color: var(--text-primary); color: var(--bg-base); background-color: var(--text-primary); }
@@ -76,14 +77,33 @@
         
         .photo-card { border: 1px solid var(--border-color); background-color: var(--bg-base); padding: 1rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
         .photo-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--accent-color); border-color: var(--text-primary); }
-        .photo-img-container { width: 100%; height: 200px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 1rem; }
-        .photo-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(120%); transition: filter 0.3s; }
-        .photo-card:hover .photo-img { filter: grayscale(0%) contrast(110%); }
+        .photo-img-container { width: 100%; height: 200px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 1rem; background: #111; }
+        
+        /* 修改：移除强制黑白滤镜，改为降低亮度和增加对比度，保留色彩 */
+        .photo-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8) contrast(1.1); transition: filter 0.3s; }
+        .photo-card:hover .photo-img { filter: brightness(1) contrast(1.05); }
+        
         .photo-title { font-family: var(--font-pixel); font-size: 1.5rem; margin-bottom: 0.5rem; text-transform: uppercase; }
         .photo-date { font-size: 0.75rem; color: var(--accent-color); margin-bottom: 1rem; }
         .photo-description { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
         .photo-link { color: var(--bg-base); background-color: var(--text-primary); padding: 0.3rem 0.8rem; font-size: 0.8rem; text-transform: uppercase; text-decoration: none; display: inline-block; font-weight: bold; }
         
+        /* 新增：说说/日志时间线 */
+        .timeline { border-left: 2px dashed var(--border-color); margin-left: 1rem; padding-left: 2rem; display: flex; flex-direction: column; gap: 3rem; max-width: 800px; }
+        .moment-card { position: relative; border: 1px solid var(--border-color); background: var(--bg-base); padding: 1.5rem; box-shadow: 6px 6px 0px #111; transition: all 0.2s; }
+        .moment-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0px var(--text-primary); border-color: var(--text-primary); }
+        
+        /* 时间线节点 */
+        .moment-card::before { content: ''; position: absolute; left: -2.45rem; top: 1.5rem; width: 12px; height: 12px; background: var(--bg-base); border: 2px solid var(--accent-color); z-index: 2; transition: all 0.2s; }
+        .moment-card:hover::before { background: var(--accent-color); }
+        
+        .moment-date { font-family: var(--font-pixel); color: var(--accent-color); margin-bottom: 0.8rem; font-size: 1.3rem; }
+        .moment-content { color: var(--text-primary); margin-bottom: 1rem; font-size: 1rem; }
+        .moment-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 200px)); gap: 1rem; margin-top: 1rem; }
+        .moment-img { width: 100%; height: 120px; object-fit: cover; border: 1px solid var(--border-color); filter: brightness(0.85); transition: filter 0.3s; }
+        .moment-card:hover .moment-img { filter: brightness(1); }
+        .moment-meta { font-family: var(--font-pixel); font-size: 1rem; color: var(--text-secondary); display: flex; gap: 1.5rem; margin-top: 1.5rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem; text-transform: uppercase; }
+
         .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
         .contact-card { border: 1px solid var(--border-color); padding: 2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; text-decoration: none; color: var(--text-primary); transition: all 0.2s; position: relative; overflow: hidden; }
         .contact-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--text-primary); transform: scaleY(0); transform-origin: bottom; transition: transform 0.2s; z-index: -1; }
@@ -104,6 +124,8 @@
             .nav-links.active { display: flex; }
             .mobile-menu-btn { display: block; }
             .about-content { grid-template-columns: 1fr; }
+            .timeline { margin-left: 0; padding-left: 1.5rem; }
+            .moment-card::before { left: -1.95rem; }
             footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
         .fade-in { opacity: 0; }
@@ -120,7 +142,8 @@
             <li><a href="#home" class="active">01_INIT</a></li>
             <li><a href="#about">02_SYS.INFO</a></li>
             <li><a href="#portfolio">03_ARCHIVE</a></li>
-            <li><a href="#contact">04_PING</a></li>
+            <li><a href="#moments">04_LOGS</a></li>
+            <li><a href="#contact">05_PING</a></li>
         </ul>
     </header>
     
@@ -128,6 +151,7 @@
         <section id="home" class="hero"></section>
         <section id="about"></section>
         <section id="portfolio"></section>
+        <section id="moments"></section>
         <section id="contact"></section>
     </main>
     
@@ -139,13 +163,11 @@
     <div class="copy-notification" id="copy-notification">DATA_COPIED_SUCCESSFULLY</div>
     
     <script src="data.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 检查数据是否成功加载
             if (!window.portfolioData) {
                 document.body.innerHTML = '<h1 style="color:red; text-align:center; padding: 50px;">错误：未能读取到数据。请确保 data.js 文件与 index.html 在同一文件夹内。</h1>';
                 return;
@@ -153,9 +175,7 @@
 
             const data = window.portfolioData;
             
-            // ==========================================
-            // 渲染逻辑
-            // ==========================================
+            // 渲染 Hero
             document.getElementById('home').innerHTML = `
                 <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
                 <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
@@ -165,6 +185,7 @@
                 </div>
             `;
 
+            // 渲染 About
             document.getElementById('about').innerHTML = `
                 <h2 class="section-title fade-in">${data.about.title}</h2>
                 <div class="about-content">
@@ -190,6 +211,7 @@
                 </div>
             `;
 
+            // 渲染 Portfolio
             document.getElementById('portfolio').innerHTML = `
                 <h2 class="section-title fade-in">${data.portfolio.title}</h2>
                 <div class="portfolio-filter fade-in">
@@ -210,6 +232,29 @@
                 </div>
             `;
 
+            // 渲染 Moments (说说)
+            document.getElementById('moments').innerHTML = `
+                <h2 class="section-title fade-in">${data.moments.title}</h2>
+                <div class="timeline">
+                    ${data.moments.items.map(m => `
+                        <div class="moment-card fade-in">
+                            <div class="moment-date">[ ${m.date} ]</div>
+                            <div class="moment-content">${m.content}</div>
+                            ${m.images && m.images.length > 0 ? `
+                                <div class="moment-images">
+                                    ${m.images.map(img => `<img src="${img}" class="moment-img" loading="lazy">`).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="moment-meta">
+                                ${m.location ? `<span><i class="fas fa-map-marker-alt"></i> LOC: ${m.location}</span>` : ''}
+                                <span><i class="fas fa-satellite-dish"></i> BROADCAST_END</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // 渲染 Contact
             document.getElementById('contact').innerHTML = `
                 <h2 class="section-title fade-in">${data.contact.title}</h2>
                 <div class="contact-grid">
@@ -233,7 +278,6 @@
             // ==========================================
             gsap.registerPlugin(ScrollTrigger);
 
-            // 文字滚动点亮
             document.querySelectorAll('.scroll-light-up').forEach(el => {
                 const text = el.innerText;
                 el.innerHTML = ''; 
@@ -258,7 +302,6 @@
                 });
             });
 
-            // 卡片浮现
             document.querySelectorAll('.fade-in').forEach((el) => {
                 gsap.fromTo(el, { opacity: 0, y: 30 }, { 
                     opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
@@ -266,7 +309,6 @@
                 });
             });
 
-            // 移动菜单
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const navLinks = document.getElementById('nav-links');
             mobileMenuBtn.addEventListener('click', () => {
@@ -274,14 +316,12 @@
                 mobileMenuBtn.innerText = navLinks.classList.contains('active') ? '[ CLOSE ]' : '[ MENU ]';
             });
             
-            // 顶栏背景
             const header = document.getElementById('main-header');
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) header.classList.add('scrolled');
                 else header.classList.remove('scrolled');
             });
             
-            // 过滤系统
             const filterButtons = document.querySelectorAll('.filter-btn');
             const photoCards = document.querySelectorAll('.photo-card');
             filterButtons.forEach(button => {
@@ -301,20 +341,6 @@
                 });
             });
             
-            // 复制通知
             const copyTriggers = document.querySelectorAll('.copy-trigger');
             const notification = document.getElementById('copy-notification');
-            copyTriggers.forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const text = trigger.getAttribute('data-copy');
-                    navigator.clipboard.writeText(text).then(() => {
-                        notification.classList.add('show');
-                        setTimeout(() => notification.classList.remove('show'), 2000);
-                    });
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+            copy
