@@ -10,7 +10,6 @@
     <style>
         :root {
             --bg-base: #050505; --bg-surface: #0a0a0a; --border-color: #333333; --border-highlight: #ffffff;
-            /* 重点修改了下面两个变量的颜色，提升对比度 */
             --text-primary: #ffffff; --text-secondary: #999999; --text-dim: #555555; --accent-color: #ff003c;
             --font-pixel: 'VT323', monospace; --font-mono: 'Space Mono', monospace;
         }
@@ -37,9 +36,11 @@
         .hero-subtitle { font-family: var(--font-pixel); color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-family: var(--font-pixel); font-size: clamp(3rem, 8vw, 6rem); font-weight: 400; line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; color: var(--text-primary); }
         
+        /* 故障效果修改：加上了 .glitch-active 用于 JS 强制触发 */
         .glitch-hover { position: relative; display: inline-block; }
-        .glitch-hover:hover::before { content: attr(data-text); position: absolute; left: -2px; text-shadow: 2px 0 blue; top: 0; color: white; background: black; overflow: hidden; animation: noise-anim 2s infinite linear alternate-reverse; }
-        .glitch-hover:hover::after { content: attr(data-text); position: absolute; left: 2px; text-shadow: -2px 0 var(--accent-color); top: 0; color: white; background: black; overflow: hidden; animation: noise-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-hover:hover::before, .glitch-active::before { content: attr(data-text); position: absolute; left: -2px; text-shadow: 2px 0 blue; top: 0; color: white; background: black; overflow: hidden; animation: noise-anim 2s infinite linear alternate-reverse; z-index: 2; }
+        .glitch-hover:hover::after, .glitch-active::after { content: attr(data-text); position: absolute; left: 2px; text-shadow: -2px 0 var(--accent-color); top: 0; color: white; background: black; overflow: hidden; animation: noise-anim-2 3s infinite linear alternate-reverse; z-index: 2; }
+        
         @keyframes noise-anim { 0% { clip-path: inset(40% 0 61% 0); } 20% { clip-path: inset(92% 0 1% 0); } 40% { clip-path: inset(43% 0 1% 0); } 60% { clip-path: inset(25% 0 58% 0); } 80% { clip-path: inset(54% 0 7% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
         @keyframes noise-anim-2 { 0% { clip-path: inset(15% 0 81% 0); } 20% { clip-path: inset(8% 0 82% 0); } 40% { clip-path: inset(73% 0 13% 0); } 60% { clip-path: inset(4% 0 6% 0); } 80% { clip-path: inset(84% 0 1% 0); } 100% { clip-path: inset(21% 0 63% 0); } }
         @keyframes blink { 50% { opacity: 0; } }
@@ -158,9 +159,10 @@
                 }
                 const data = window.portfolioData;
 
+                // 我们给主标题 TERRY ZHANG 添加了两个 id (main-title) 和控制强制闪烁的类 (glitch-active)
                 document.getElementById('home').innerHTML = `
                     <div class="hero-subtitle fade-in">${data.hero.subtitle}</div>
-                    <h1 class="fade-in glitch-hover" data-text="${data.hero.name}">${data.hero.name}</h1>
+                    <h1 id="main-title" class="fade-in glitch-hover glitch-active" data-text="${data.hero.name}">${data.hero.name}</h1>
                     <h1 class="fade-in glitch-hover" data-text="${data.hero.role}" style="color: var(--text-secondary);">${data.hero.role}</h1>
                     <div class="hero-badges fade-in">
                         ${data.hero.badges.map(b => `<div class="badge">${b}</div>`).join('')}
@@ -230,6 +232,15 @@
                 `;
 
                 document.getElementById('current-year').innerText = new Date().getFullYear();
+
+                // 核心逻辑：设置定时器，在1.2秒后移除初始强制闪烁效果
+                // 1200ms 让它与 0.8s 的 fade-in 动画略微重叠，效果最好
+                setTimeout(() => {
+                    const mainTitle = document.getElementById('main-title');
+                    if(mainTitle) {
+                        mainTitle.classList.remove('glitch-active');
+                    }
+                }, 1200);
 
                 gsap.registerPlugin(ScrollTrigger);
 
